@@ -1,0 +1,32 @@
+package com.edusystem.Repositories;
+
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+@Repository
+public class UserDAO {
+
+    private final static List<UserDetails> list = new ArrayList<>(Arrays.asList(
+            new User(
+                    "loannguyen123@gmail.com",
+                    "admin123",
+                    Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN"))
+            )
+    ));
+
+    public UserDetails findEmail(String email){
+        return  list
+                .stream()
+                .filter(e -> e.getUsername().equals(email))
+                .findFirst()
+                .orElseThrow(()-> new UsernameNotFoundException("not found User"));
+    }
+}
