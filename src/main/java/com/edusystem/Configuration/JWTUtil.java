@@ -17,7 +17,7 @@ import java.util.Map;
 public class JWTUtil {
     final long ONE_MINUTE_IN_MILLIS = 60000;
     final long EXPIRATION_TIME = 8 * 60 * ONE_MINUTE_IN_MILLIS; // thay thế cho timeUnit
-    final private Key jwtKey = new SecretKeySpec("secret".getBytes(), SignatureAlgorithm.HS256.getJcaName());
+    final private Key jwtKey = new SecretKeySpec("YXNkZnNhZGZhc2Zhc2RmYXMzNDM0ZGZnc2Znc2Zn".getBytes(), SignatureAlgorithm.HS256.getJcaName());
 
     // 1.1 tạo token
     public String createToken(Map<String,Object> claims, UserDetails userDetails){
@@ -61,6 +61,7 @@ public class JWTUtil {
     // 2.truy cập tất cả thông tin xác thực
     public Claims extractAllClaims(String token){
         return Jwts.parserBuilder()
+                .setSigningKey(jwtKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();

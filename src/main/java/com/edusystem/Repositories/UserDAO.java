@@ -17,7 +17,7 @@ public class UserDAO {
     private final static List<UserDetails> list = new ArrayList<>(Arrays.asList(
             new User(
                     "loannguyen123@gmail.com",
-                    "admin123",
+                    "$2a$10$EOeoExqNirHcUY//9HBy9e5MCkEXkeBAUaAMdp8Z9RZVEJpoXG1vq",
                     Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN"))
             )
     ));
