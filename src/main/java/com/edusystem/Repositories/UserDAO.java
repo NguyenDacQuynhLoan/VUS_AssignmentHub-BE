@@ -23,10 +23,18 @@ public class UserDAO {
     ));
 
     public UserDetails findEmail(String email){
-        return  list
-                .stream()
-                .filter(e -> e.getUsername().equals(email))
-                .findFirst()
-                .orElseThrow(()-> new UsernameNotFoundException("not found User"));
+        UserDetails userDetails = null;
+        for (UserDetails user : list) {
+            if(user.getUsername().equals(email)) {
+                userDetails = new User(user.getUsername(),
+                        user.getPassword(),
+                        user.getAuthorities()); // clone cai nay ra. xai chung Object thi thang Spring security no set null pass sau moi lan authenticate o controller roi
+            }
+        }
+
+        if (userDetails == null) {
+            throw new UsernameNotFoundException("not found User");
+        }
+        return userDetails;
     }
 }
