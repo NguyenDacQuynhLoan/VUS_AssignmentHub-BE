@@ -1,6 +1,6 @@
 package com.edusystem.Configuration;
 
-import com.edusystem.Repositories.UserDAO;
+import com.edusystem.Repositories.Authen.AuthenticateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private  final JWTAuthFilter _jwtAuthenFilter;
 
-    private final UserDAO userDAO;
+    private final AuthenticateRepository authenticateRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -49,26 +49,24 @@ public class SecurityConfig {
         http
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers("/api/auth/login")//"/**/auth/**"
+            .antMatchers("/auth/login")
             .permitAll()
             .anyRequest()
             .authenticated()
             .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            //.and().formLogin().loginPage("/login")
             .and()
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(_jwtAuthenFilter, UsernamePasswordAuthenticationFilter.class);
-            //.formLogin()
-            //.and()
-            //.httpBasic();
         return http.build();
     }
 
     @Bean
     public UserDetailsService userDetailsService(){
         return userEmail -> {
-            UserDetails userDetails = userDAO.findEmail(userEmail);
+            UserDetails userDetails = authenticateRepository.findEmail(userEmail);
             if (userDetails == null) {
                 throw new UsernameNotFoundException("User not found with email: " + userEmail);
             }

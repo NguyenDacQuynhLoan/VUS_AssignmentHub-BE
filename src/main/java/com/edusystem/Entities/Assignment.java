@@ -3,8 +3,7 @@ package com.edusystem.Entities;
 import javax.persistence.*;
 
 @Entity
-public class Assignment {//extends BaseEntity
-	//properties
+public class Assignment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -14,9 +13,9 @@ public class Assignment {//extends BaseEntity
 
 	private String feedback;
 	@ManyToOne(optional = false,fetch = FetchType.LAZY)
-	private UserEntity user;
+	private User user;
 
-	//getter & setter
+	// region getter & setter
 	public Long getId() {
 		return id;
 	}
@@ -45,22 +44,23 @@ public class Assignment {//extends BaseEntity
 		this.feedback = feedback;
 	}
 
-	public UserEntity getUser() {
+	public User getUser() {
 		return user;
 	}
-	public void setUser(UserEntity user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
-	
-	// default constructor
+	// endregion
+
+	// region constructor
 	public Assignment() {
 	}
-	
-	// constructor
-	public Assignment(String title, Boolean status, String feedback, UserEntity user) {
+
+	public Assignment(String title, Boolean status, String feedback, User user) {
 		this.title = title;
 		this.status = status;
 		this.feedback = feedback;
 		this.user = user;
 	}
+	// endregion
 }

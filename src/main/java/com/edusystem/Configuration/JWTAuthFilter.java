@@ -1,6 +1,6 @@
 package com.edusystem.Configuration;
 
-import com.edusystem.Repositories.UserDAO;
+import com.edusystem.Repositories.Authen.AuthenticateRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +22,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RequiredArgsConstructor
 public class JWTAuthFilter extends OncePerRequestFilter {
 //    @Autowired
-    private final UserDAO userDAO;
+    private final AuthenticateRepository authenticateRepository;
 
     private final JWTUtil _jwtUtil;
 
@@ -40,7 +40,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         token = authHeader.substring(7);
         userEmail = _jwtUtil.extractUserName(token);
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null ){
-            UserDetails userDetails = userDAO.findEmail(userEmail);
+            UserDetails userDetails = authenticateRepository.findEmail(userEmail);
 
             if(_jwtUtil.isTokenValid(token, userDetails)){
                 //

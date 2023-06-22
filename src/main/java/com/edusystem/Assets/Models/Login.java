@@ -1,4 +1,4 @@
-package com.edusystem.Models;
+package com.edusystem.Assets.Models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

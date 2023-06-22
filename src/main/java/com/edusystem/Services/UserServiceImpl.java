@@ -4,38 +4,33 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import com.edusystem.Entities.UserEntity;
-import com.edusystem.Repositories.IUserRepository;
+import com.edusystem.Configuration.SecurityConfig;
+import com.edusystem.Entities.User;
+import com.edusystem.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class UserService implements IUserService{
+public class UserServiceImpl implements IUserService{
 	@Autowired
-	IUserRepository _userReposity;
-//EduSystemApplication
-// 	inject = constructor
-//	IUserRepository _userReposity;
-//	ConstructorInjection
-//	public UserService(IUserRepository _userReposity) {
-//		this._userReposity = _userReposity;
-//	}
+	SecurityConfig _securityConfig;
 
-	@Override
-	public List<UserEntity> getAllUsers() {
+	@Autowired
+	UserRepository _userReposity;
+
+//	@Override
+	public List<User> getAllUsers() {
 		return _userReposity.findAll();
 	}
 
-	@Override
-	public Optional<UserEntity> findUserById(Long id) {
+	public Optional<User> findUserById(Long id) {
 		return _userReposity.findById(id);
 	}
 
-	@Override
-	public UserEntity updateUser(UserEntity user) {
-		Optional<UserEntity> existUser = findUserById(user.getId());
+	public User updateUser(User user) {
+		Optional<User> existUser = findUserById(user.getId());
 		if(existUser.isPresent()) {
 			return _userReposity.save(user);
 		 } else {
@@ -43,16 +38,17 @@ public class UserService implements IUserService{
 	    }
 	}
 
-	@Override
 	public void deleteUser(Long id) {
 		_userReposity.deleteById(id);
 	}
 
-	@Override
-	public UserEntity createUser(UserEntity user) {
-		Optional<UserEntity> existUser = findUserById(user.getId());
+	public User createUser(User user) {
+		Optional<User> existUser = findUserById(user.getId());
 		if(!existUser.isPresent())
 		{
+			 String encodedPassword = _securityConfig.passwordEncoder().encode(user.getPassword());
+			user.setPassword(encodedPassword);
+
 			return _userReposity.save(user);
 		}else {
 			throw new NoSuchElementException("User with id is existed: " + user.getId());

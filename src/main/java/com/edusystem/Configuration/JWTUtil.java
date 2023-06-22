@@ -16,12 +16,13 @@ import java.util.Map;
 @Component
 public class JWTUtil {
     final long ONE_MINUTE_IN_MILLIS = 60000;
-    final long EXPIRATION_TIME = 8 * 60 * ONE_MINUTE_IN_MILLIS; // thay thế cho timeUnit
+    final long EXPIRATION_TIME = 8 * 60 * ONE_MINUTE_IN_MILLIS;
     final private Key jwtKey = new SecretKeySpec("YXNkZnNhZGZhc2Zhc2RmYXMzNDM0ZGZnc2Znc2Zn".getBytes(), SignatureAlgorithm.HS256.getJcaName());
 
     // 1.1 tạo token
     public String createToken(Map<String,Object> claims, UserDetails userDetails){
-        return Jwts.builder().setClaims(claims)
+        return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .claim("authorities",userDetails.getAuthorities())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -36,27 +37,11 @@ public class JWTUtil {
         return createToken(claims, userDetails);
     }
 
-//    public String generateToken(UserDetails userDetails){
-//        Map<String,Object> claims = new HashMap<>();
-//        return createToken(claims, userDetails);
-//    }
-
-    //backbackup   public String generateToken(UserDetails userDetails,Map<String,Object> claims){
-//        return createToken(claims,userDetails);
-//    }
-
-
-
     // validate
     public boolean isTokenExpirated(String token){
         Date dateExp = extractClaims(token, Claims::getExpiration);
         return dateExp.before(new Date());
     }
-
-//    public boolean hasClaim(String token, String claimName){
-//        final Claims claims = extractAllClaims(token);
-//        return claims.get(claimName) != null;
-//    }
 
     // 2.truy cập tất cả thông tin xác thực
     public Claims extractAllClaims(String token){
@@ -81,7 +66,6 @@ public class JWTUtil {
     // 5. kiểm tra token valid
     public boolean isTokenValid(String token, UserDetails userDetails){
         final String userName = extractUserName(token);
-        return  userName.equals(userDetails.getUsername())
-                && !isTokenExpirated(token);
+        return  userName.equals(userDetails.getUsername()) && !isTokenExpirated(token);
     }
 }

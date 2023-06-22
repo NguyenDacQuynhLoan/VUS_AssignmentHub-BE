@@ -19,7 +19,7 @@
       </TomcatInfo>
     </option>
     <option name="vmOptions" value="" />
-    <module name="demo" />
+    <module name="edu-system-back-end.main" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
