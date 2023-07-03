@@ -1,38 +1,63 @@
+// ==========================================================================================
+//
+// Copyright © 2023 Edu System
+//
+// History
+// ------------------------------------------------------------------------------------------
+// Date         Author
+// ------------------------------------------------------------------------------------------
+// 2022.06.01   LOAN
+// ==========================================================================================
+//
 package com.edusystem.Entities;
 
-import java.time.LocalDate;
+import com.edusystem.Assets.Enum.Major;
+import com.edusystem.Assets.Enum.Role;
+
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
 
-@Entity
+/**
+ * Entities
+ */
+@Entity(name = "TBL_USER")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "user_id")
 	private Long id;
-	
-	private String username;
-	
+
+	@Column(name = "user_name")
+	private String userName;
+
+	@Column(name = "user_code")
+	private String userCode;
+
+	private String email;
+
 	private String password;
 
-	private LocalDate assignedDate;
+	@Column(name = "user_major",nullable = true)
+	private Major major;
 
-	private Integer roleCode;
+	@Column(nullable = true)
+	private Role roleCode;
 
 	@OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Assignment> assignments = new ArrayList<>();
 
 	@ManyToMany
 	@JoinTable(
-		name ="user_role",
+		name ="user_assignedSubject",
 		joinColumns = @JoinColumn(name="user_id"),
-		inverseJoinColumns = @JoinColumn(name="role_id")
+		inverseJoinColumns = @JoinColumn(name="subject_id")
 	)
-	private Set<Role> userRoles;
+	private Set<Subject> userSubject;
 
+	// region getter & setter
 	public Long getId() {
 		return id;
 	}
@@ -41,12 +66,20 @@ public class User {
 		this.id = id;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserCode() {
+		return userCode;
+	}
+
+	public void setUserCode(String userCode) {
+		this.userCode = userCode;
 	}
 
 	public String getPassword() {
@@ -57,12 +90,12 @@ public class User {
 		this.password = password;
 	}
 
-	public LocalDate getAssignedDate() {
-		return assignedDate;
+	public Role getRoleCode() {
+		return roleCode;
 	}
 
-	public void setAssignedDate(LocalDate assignedDate) {
-		this.assignedDate = assignedDate;
+	public void setRoleCode(Role roleCode) {
+		this.roleCode = roleCode;
 	}
 
 	public List<Assignment> getAssignments() {
@@ -73,32 +106,26 @@ public class User {
 		this.assignments = assignments;
 	}
 
-	public Integer getRoleCode() {
-		return roleCode;
+	public Set<Subject> getUserSubject() {
+		return userSubject;
 	}
 
-	public void setRoleCode(Integer roleCode) {
-		this.roleCode = roleCode;
+	public void setUserSubject(Set<Subject> userSubject) {
+		this.userSubject = userSubject;
 	}
+	// endregion
 
-	public Set<Role> getUserRoles() {
-		return userRoles;
-	}
-
-	public void setUserRoles(Set<Role> userRoles) {
-		this.userRoles = userRoles;
-	}
-
-	public User(Long id, String username, String password, LocalDate assignedDate, Integer roleCode, List<Assignment> assignments, Set<Role> userRoles) {
+	// region constructor
+	public User(Long id, String userName, String userCode, String password, Role roleCode, List<Assignment> assignments, Set<Subject> userSubject) {
 		this.id = id;
-		this.username = username;
+		this.userName = userName;
+		this.userCode = userCode;
 		this.password = password;
-		this.assignedDate = assignedDate;
 		this.roleCode = roleCode;
 		this.assignments = assignments;
-		this.userRoles = userRoles;
+		this.userSubject = userSubject;
 	}
 
-	public User() {
-	}
+	public User() {}
+	// endregion
 }

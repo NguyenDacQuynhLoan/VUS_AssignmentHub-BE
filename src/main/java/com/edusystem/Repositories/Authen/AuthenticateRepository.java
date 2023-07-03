@@ -1,6 +1,5 @@
 package com.edusystem.Repositories.Authen;
 
-import com.edusystem.Assets.Enum.Role;
 import com.edusystem.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,30 +14,24 @@ import java.util.List;
 
 @Repository
 public class AuthenticateRepository {
+
     @Autowired
     UserRepository _userRepository;
 
-    String getRoleName (com.edusystem.Entities.User user){
-        com.edusystem.Entities.User detectedUser = _userRepository.findByIdAndUserRoles_Code(user.getId(), user.getRoleCode());
-        String result =  Role.getByIndex(detectedUser.getRoleCode()).getName();
-//        return  result;
-        return "";
-    }
-
     /**
      *  Find email in Database
-     * @param email
-     * @return
+     * @param email User email from User entity
+     * @return founded user
      */
     public UserDetails findEmail(String email){
-         List<UserDetails> newUserDetail = new ArrayList<UserDetails>();
+         List<UserDetails> newUserDetail = new ArrayList<>();
 
         _userRepository.findAll().forEach(e -> {
              UserDetails newUserArray = new User(
-                 e.getUsername(),
+                 e.getUserName(),
                  e.getPassword(),
-//                     Collections.singleton(new SimpleGrantedAuthority("ADMIN"))
-                 Collections.singleton(new SimpleGrantedAuthority(getRoleName(e)))
+                     Collections.singleton(new SimpleGrantedAuthority("ADMIN"))
+//                 Collections.singleton(new SimpleGrantedAuthority(e.getRoleCode().getRoleName()))
              );
              newUserDetail.add(newUserArray);
          });

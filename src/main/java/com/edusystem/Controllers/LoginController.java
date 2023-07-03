@@ -27,7 +27,7 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<String> isLogged(@RequestBody Login model)
     {
-        var temp = model.getPassword();
+        var passwordValue = model.getPassword();
         _authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(model.getEmail(),model.getPassword())
         );
