@@ -1,5 +1,6 @@
 package com.edusystem.Repositories.Authen;
 
+import com.edusystem.Repositories.RoleRepository;
 import com.edusystem.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +19,15 @@ public class AuthenticateRepository {
     @Autowired
     UserRepository _userRepository;
 
+    @Autowired
+    RoleRepository _roleRepository;
+
+
+    public void getUserRoleName(com.edusystem.Entities.User user){
+        var temp =_roleRepository.findAll().stream()
+                .filter(e -> e.getCode().equals(user.getUserCode())).findFirst();
+    }
+
     /**
      *  Find email in Database
      * @param email User email from User entity
@@ -28,10 +38,10 @@ public class AuthenticateRepository {
 
         _userRepository.findAll().forEach(e -> {
              UserDetails newUserArray = new User(
-                 e.getUserName(),
+                 e.getEmail(),
                  e.getPassword(),
-                     Collections.singleton(new SimpleGrantedAuthority("ADMIN"))
-//                 Collections.singleton(new SimpleGrantedAuthority(e.getRoleCode().getRoleName()))
+                     Collections.singleton(new SimpleGrantedAuthority("AD"))
+//                 Collections.singleton(new SimpleGrantedAuthority(e.getUserCode().getName()))
              );
              newUserDetail.add(newUserArray);
          });

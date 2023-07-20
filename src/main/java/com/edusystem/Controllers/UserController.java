@@ -19,16 +19,17 @@ public class UserController{
 
     @PostMapping
     public User createUser(@RequestBody User model){
-        return _userServiceImpl.createAsync(model);
+        return _userServiceImpl.createUser(model);
     }
 //
 //    public User updateUser(@RequestBody User model){
 //        return _userServiceImpl.updateAsync(model,model.getId());
 //    }
-//    @GetMapping
-//    public List<User> findAllUsers() {
-//        return _userServiceImpl.getAllAsync();
-//    }
+
+    @GetMapping
+    public List<User> findAllUsers() {
+        return _userServiceImpl.getAllUsers();
+    }
 //
 //    @GetMapping("/{code}")
 //    public User findbyUser(@RequestBody Long id ,@PathParam("code") String code ){

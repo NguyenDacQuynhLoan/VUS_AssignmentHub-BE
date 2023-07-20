@@ -99,6 +99,7 @@ public class Assignment {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
 	// endregion
 
 	// region Constructor
