@@ -13,7 +13,6 @@ public class AssignmentServiceImpl {
     @Autowired
     AssignmentRepository _assignmentRepository;
 
-
     public List<Assignment> getAllAssignments() {
         return _assignmentRepository.findAll();
     }

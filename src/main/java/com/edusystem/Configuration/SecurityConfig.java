@@ -2,10 +2,13 @@ package com.edusystem.Configuration;
 
 import com.edusystem.Repositories.Authen.AuthenticateRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,9 +24,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+//    @Qualifier("MyUserDetailService")
+//    @Autowired
+//    private UserDetailsService userDetailsService;
+
     private  final JWTAuthFilter _jwtAuthenFilter;
 
     private final AuthenticateRepository authenticateRepository;
+
+//    @Bean
+//    protected void createAdminAccount(AuthenticationManagerBuilder auth)throws  Exception{
+//            auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -48,18 +60,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
             .csrf().disable()
-            .authorizeRequests()
-            .antMatchers("/auth/login")
-            .permitAll()
-            .anyRequest()
-            .authenticated()
-            .and()
+                .authorizeRequests()
+                .antMatchers("/auth/login")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             //.and().formLogin().loginPage("/login")
-            .and()
-            .authenticationProvider(authenticationProvider())
-            .addFilterBefore(_jwtAuthenFilter, UsernamePasswordAuthenticationFilter.class);
+                .and()
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(_jwtAuthenFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
