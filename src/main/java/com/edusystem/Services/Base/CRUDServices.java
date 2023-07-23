@@ -1,4 +1,7 @@
 //package com.edusystem.Services.Base;
 //
-//public interface CRUDServices {
+//import java.util.List;
+//
+//public interface CRUDServices<T> {
+//    public List<T> getAllItem();
 //}

@@ -12,8 +12,8 @@
 package com.edusystem.Entities;
 
 import com.edusystem.Assets.Enum.Major;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -51,18 +51,8 @@ public class User {
 	private String email;
 
 	private String password;
-
 	@OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
-	@Column(nullable = true)
-	private List<Assignment> assignments;
-
-//	@ManyToMany
-//	@JoinTable(
-//			name="user_role",
-//			joinColumns = @JoinColumn(name = "user_id"),
-//			inverseJoinColumns = @JoinColumn(name = "role_id")
-//	)
-//	private Set<Role> roles;
+	private List<Assignment> assignments = new ArrayList<>();
 
 	@ManyToMany
 	@JoinTable(
@@ -74,7 +64,6 @@ public class User {
 	private Set<Subject> subjects;
 
 	// region getter & setter
-
 	public Long getId() {
 		return id;
 	}
@@ -147,14 +136,6 @@ public class User {
 		this.password = password;
 	}
 
-	public List<Assignment> getAssignments() {
-		return assignments;
-	}
-
-	public void setAssignments(List<Assignment> assignments) {
-		this.assignments = assignments;
-	}
-
 	public Set<Subject> getSubjects() {
 		return subjects;
 	}
@@ -162,13 +143,9 @@ public class User {
 	public void setSubjects(Set<Subject> subjects) {
 		this.subjects = subjects;
 	}
-
-
 	// endregion
 
 	// region constructor
-
-
 	public User(Long id, String userCode, String userName, String gender, Date dateOfBirth, String phone, Major major, String email, String password, List<Assignment> assignments, Set<Subject> subjects) {
 		this.id = id;
 		this.userCode = userCode;
@@ -179,10 +156,20 @@ public class User {
 		this.major = major;
 		this.email = email;
 		this.password = password;
-		this.assignments = assignments;
+		this.assignments = new ArrayList<>();
 		this.subjects = subjects;
 	}
 
 	public User() {}
 	// endregion
+
+	public void AddAssignment(Assignment item){
+		assignments.add(item);
+		item.setUser(this);
+	}
+
+	public void removeAssignment(Assignment item){
+		assignments.remove(item);
+		item.setUser(null);
+	}
 }

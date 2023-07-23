@@ -2,6 +2,7 @@ package com.edusystem.Entities;
 
 import com.edusystem.Assets.Enum.Grade;
 import com.edusystem.Assets.Enum.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -99,7 +100,6 @@ public class Assignment {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
 	// endregion
 
 	// region Constructor

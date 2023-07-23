@@ -24,18 +24,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-//    @Qualifier("MyUserDetailService")
-//    @Autowired
-//    private UserDetailsService userDetailsService;
-
     private  final JWTAuthFilter _jwtAuthenFilter;
 
     private final AuthenticateRepository authenticateRepository;
-
-//    @Bean
-//    protected void createAdminAccount(AuthenticationManagerBuilder auth)throws  Exception{
-//            auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -57,21 +48,21 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/auth/login")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
+            .cors().and().csrf().disable()
+            .authorizeRequests()
+            .antMatchers("/auth/login")
+            .permitAll()
+            .anyRequest()
+            .authenticated()
+            .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             //.and().formLogin().loginPage("/login")
-                .and()
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(_jwtAuthenFilter, UsernamePasswordAuthenticationFilter.class);
+            .and()
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(_jwtAuthenFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
