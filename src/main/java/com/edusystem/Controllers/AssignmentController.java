@@ -2,6 +2,7 @@ package com.edusystem.Controllers;
 
 import com.edusystem.Entities.Assignment;
 import com.edusystem.Services.AssignmentServiceImpl;
+import com.edusystem.dto.AssignmentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +16,12 @@ public class AssignmentController {
     AssignmentServiceImpl _assignmentService;
 
     @GetMapping
-    public List<Assignment> getAllAssignment() {
+    public List<AssignmentDto> getAllAssignment() {
         return _assignmentService.getAllAssignments();
+    }
+    @GetMapping("/code/{code}")
+    public List<AssignmentDto> getAllAssignment(@PathVariable String code) {
+        return _assignmentService.getAssignmentsByCode(code);
     }
 
 //    @DeleteMapping("/{id}")

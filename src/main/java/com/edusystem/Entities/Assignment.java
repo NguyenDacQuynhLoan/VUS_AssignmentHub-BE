@@ -33,7 +33,7 @@ public class Assignment {
 	@Column(name = "created_date")
 	private Date createdDate;
 
-	@ManyToOne(optional = false,fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
 
 	// region Getter & Setter

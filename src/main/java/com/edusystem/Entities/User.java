@@ -51,6 +51,7 @@ public class User {
 	private String email;
 
 	private String password;
+
 	@OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Assignment> assignments = new ArrayList<>();
 
@@ -143,6 +144,11 @@ public class User {
 	public void setSubjects(Set<Subject> subjects) {
 		this.subjects = subjects;
 	}
+
+	public List<Assignment> getAssignments() {
+		return assignments;
+	}
+
 	// endregion
 
 	// region constructor
@@ -163,13 +169,13 @@ public class User {
 	public User() {}
 	// endregion
 
-	public void AddAssignment(Assignment item){
-		assignments.add(item);
-		item.setUser(this);
+	public void AddAssignment(Assignment assignment){
+		assignments.add(assignment);
+		assignment.setUser(this);
 	}
 
-	public void removeAssignment(Assignment item){
-		assignments.remove(item);
-		item.setUser(null);
+	public void removeAssignment(Assignment assignment){
+		assignments.remove(assignment);
+		assignment.setUser(null);
 	}
 }

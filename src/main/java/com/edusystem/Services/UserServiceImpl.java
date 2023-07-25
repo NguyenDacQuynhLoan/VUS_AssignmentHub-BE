@@ -22,7 +22,8 @@ public class UserServiceImpl{
 	UserRepository _userRepo;
 
 	public List<User> getAllUsers(){
-		return _userRepo.findAll();
+		List<User> list = _userRepo.findAll();
+		return list;
 	}
 
 	public User getUserById(Long id){
