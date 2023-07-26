@@ -1,7 +1,7 @@
 package com.edusystem.dto;
 
-import com.edusystem.Assets.Enum.Grade;
-import com.edusystem.Assets.Enum.Status;
+import com.edusystem.enums.Grade;
+import com.edusystem.enums.Status;
 import lombok.Data;
 
 import java.util.Date;
