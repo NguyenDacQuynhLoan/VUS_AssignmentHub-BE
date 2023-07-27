@@ -1,5 +1,6 @@
 package com.edusystem.entities;
 
+import com.edusystem.enums.Major;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -21,8 +22,10 @@ public class Subject {
     @Column(name = "subject_name")
     private String name;
 
+    private Major major;
+
     @ManyToMany(mappedBy = "subjects")
-    @JsonIgnore
+//    @JsonIgnore
     private Set<User> users;
 
     // region getter & setter
@@ -50,6 +53,14 @@ public class Subject {
         this.name = name;
     }
 
+    public Major getMajor() {
+        return major;
+    }
+
+    public void setMajor(Major major) {
+        this.major = major;
+    }
+
     public Set<User> getUsers() {
         return users;
     }
@@ -63,10 +74,11 @@ public class Subject {
     public Subject() {
     }
 
-    public Subject(Long id, String code, String name, Set<User> users) {
+    public Subject(Long id, String code, String name, Major major, Set<User> users) {
         this.id = id;
         this.code = code;
         this.name = name;
+        this.major = major;
         this.users = users;
     }
     //endregion

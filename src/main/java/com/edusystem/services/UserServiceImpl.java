@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserServices{
 	 */
 	@Override
 	public UserDto createUser(UserDto user){
-		User userByCode = userRepository.findByUserCode(user.getCode());
+		User userByCode = userRepository.findByUserCode(user.getUserCode());
 		if(userByCode == null){
 			String encodedPassword = securityConfig
 					.passwordEncoder()
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserServices{
 
 			return user;
 		}else {
-			throw new NoSuchElementException("Existed User with code is: " + user.getCode());
+			throw new NoSuchElementException("Existed User with code is: " + user.getUserCode());
 		}
 	}
 
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserServices{
 	 */
 	@Override
 	public UserDto updateUser(UserDto user){
-		User userByCode = userRepository.findByUserCode(user.getCode());
+		User userByCode = userRepository.findByUserCode(user.getUserCode());
 		if(userByCode != null && getUserById(userByCode.getId()) != null){
 			if(user.getPassword().equals(userByCode.getPassword())){
 				String encodedPassword = securityConfig
@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserServices{
 
 			return user;
 		}else {
-			throw new NoSuchElementException("Existed User with code is : " + user.getCode());
+			throw new NoSuchElementException("Existed User with code is : " + user.getUserCode());
 		}
 	}
 

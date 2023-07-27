@@ -61,7 +61,7 @@ public class User {
 			joinColumns = @JoinColumn(name ="user_id"),
 			inverseJoinColumns = @JoinColumn(name = "subject_id")
 	)
-	@Column(nullable = true)
+//	@Column(nullable = true)
 	private Set<Subject> subjects;
 
 	// region getter & setter
@@ -173,8 +173,17 @@ public class User {
 		assignment.setUser(this);
 	}
 
-	public void removeAssignment(Assignment assignment){
+	public void RemoveAssignment(Assignment assignment){
 		assignments.remove(assignment);
 		assignment.setUser(null);
 	}
+
+//	public void AddSubject(Subject subject){
+//		subjects.add(subject);
+//	}
+//
+//	public void RemoveSubject(Subject subject){
+//		assignments.remove(subject);
+//		subject.setUsers(null);
+//	}
 }

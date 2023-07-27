@@ -1,5 +1,6 @@
 package com.edusystem.controllers;
 
+import com.edusystem.dto.RoleDto;
 import com.edusystem.entities.Role;
 import com.edusystem.services.RoleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class RoleController {
     RoleServiceImpl _roleService;
 
     @GetMapping
-    public List<Role> getAllRoles(){
+    public List<RoleDto> getAllRoles(){
         return _roleService.getAllRoles();
     }
 }

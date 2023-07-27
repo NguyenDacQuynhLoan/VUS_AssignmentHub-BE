@@ -1,50 +1,61 @@
 package com.edusystem.services;
 
+import com.edusystem.dto.RoleDto;
 import com.edusystem.entities.Role;
 import com.edusystem.repositories.RoleRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class RoleServiceImpl {
     @Autowired
-    RoleRepository _roleRepository;
+    private RoleRepository roleRepository;
 
-    public List<Role> getAllRoles() {
-        return _roleRepository.findAll();
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public List<RoleDto> getAllRoles() {
+        List<RoleDto> roleDtoList = new ArrayList<>();
+        roleRepository.findAll().forEach(e -> roleDtoList.add(modelMapper.map(e,RoleDto.class)));
+        return roleDtoList;
     }
 
     public Role getRoleById(Long id){
-        Optional<Role> option = _roleRepository.findById(id);
+        Optional<Role> option = roleRepository.findById(id);
         if(option.isEmpty()){
             return null;
         }
         return option.get();
     }
 
-    public Role updateRole(Role model){
-        Role existedRole = getRoleById(model.getId());
-        if(existedRole != null && model.getCode().equals(existedRole.getCode()) ){
-            return  _roleRepository.save(model);
+    public RoleDto updateRole(RoleDto model){
+        Role existedRole = roleRepository.findByCode(model.getCode());
+        if(existedRole != null && getRoleById(existedRole.getId()) != null){
+             roleRepository.save(existedRole);
+             return model;
         }
         return null;
     }
 
-    public Role createRole(Role model){
-        Role existedRole = getRoleById(model.getId());
+    public RoleDto createRole(RoleDto model){
+        Role existedRole = roleRepository.findByCode(model.getCode());
         if(existedRole == null){
-            return  _roleRepository.save(model);
+            Role roleMapped = modelMapper.map(model,Role.class);
+            roleRepository.save(roleMapped);
+            return model;
         }
         return null;
     }
 
-    public boolean deleteRole(Long id){
-        Role existedRole = getRoleById(id);
+    public boolean deleteRole(String code){
+        Role existedRole = roleRepository.findByCode(code);
         if(existedRole != null){
-            _roleRepository.deleteById(id);
+            roleRepository.deleteById(existedRole.getId());
             return true;
         }
         return false;

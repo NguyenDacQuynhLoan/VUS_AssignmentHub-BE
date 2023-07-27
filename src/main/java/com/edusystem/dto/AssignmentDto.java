@@ -10,7 +10,7 @@ import java.util.Date;
 public class AssignmentDto {
     private Long id;
 
-    private String user_code;
+    private String userCode;
 
     private String code;
 

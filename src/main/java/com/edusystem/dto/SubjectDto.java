@@ -1,6 +1,9 @@
 package com.edusystem.dto;
 
+import com.edusystem.enums.Major;
 import lombok.Data;
+
+import java.util.Set;
 
 @Data
 public class SubjectDto {
@@ -9,5 +12,7 @@ public class SubjectDto {
 
     public String name;
 
-    public String userCode;
+    public Major major;
+
+//    public Set<UserDto> users;
 }
