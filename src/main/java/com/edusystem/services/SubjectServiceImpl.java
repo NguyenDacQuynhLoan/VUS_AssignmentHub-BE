@@ -1,6 +1,7 @@
 package com.edusystem.services;
 
 import com.edusystem.dto.SubjectDto;
+import com.edusystem.dto.UserDto;
 import com.edusystem.entities.Subject;
 import com.edusystem.repositories.SubjectRepository;
 import com.edusystem.repositories.UserRepository;
@@ -22,6 +23,9 @@ public class SubjectServiceImpl {
     private ModelMapper modelMapper;
 
     public List<SubjectDto> getAllSubject(){
+        Set<UserDto> users = new HashSet<>();
+
+
         List<SubjectDto> subjectDtoList = new ArrayList<>();
         subjectRepository.findAll().forEach(e ->
                 subjectDtoList.add(modelMapper.map(e,SubjectDto.class))

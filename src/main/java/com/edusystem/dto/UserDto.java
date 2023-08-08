@@ -21,6 +21,8 @@ public class UserDto {
 
     public Date dateOfBirth;
 
+    //location
+    // image
     public String phone;
 
     public Major major;
@@ -29,7 +31,7 @@ public class UserDto {
 
     public String password;
 
-    public Set<SubjectDto> subjects;
+    public List<SubjectDto> subjects;
 
     public List<AssignmentDto> assignments;
 }

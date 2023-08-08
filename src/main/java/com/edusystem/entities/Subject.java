@@ -4,6 +4,9 @@ import com.edusystem.enums.Major;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,8 +28,7 @@ public class Subject {
     private Major major;
 
     @ManyToMany(mappedBy = "subjects")
-//    @JsonIgnore
-    private Set<User> users;
+    private List<User> users = new ArrayList<>();
 
     // region getter & setter
     public Long getId() {
@@ -61,11 +63,11 @@ public class Subject {
         this.major = major;
     }
 
-    public Set<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
     // endregion
@@ -74,7 +76,7 @@ public class Subject {
     public Subject() {
     }
 
-    public Subject(Long id, String code, String name, Major major, Set<User> users) {
+    public Subject(Long id, String code, String name, Major major, List<User> users) {
         this.id = id;
         this.code = code;
         this.name = name;

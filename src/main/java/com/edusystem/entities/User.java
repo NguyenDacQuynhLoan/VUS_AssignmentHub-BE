@@ -61,8 +61,7 @@ public class User {
 			joinColumns = @JoinColumn(name ="user_id"),
 			inverseJoinColumns = @JoinColumn(name = "subject_id")
 	)
-//	@Column(nullable = true)
-	private Set<Subject> subjects;
+	private List<Subject> subjects = new ArrayList<>();
 
 	// region getter & setter
 	public Long getId() {
@@ -137,11 +136,11 @@ public class User {
 		this.password = password;
 	}
 
-	public Set<Subject> getSubjects() {
+	public List<Subject> getSubjects() {
 		return subjects;
 	}
 
-	public void setSubjects(Set<Subject> subjects) {
+	public void setSubjects(List<Subject> subjects) {
 		this.subjects = subjects;
 	}
 
@@ -151,7 +150,7 @@ public class User {
 	// endregion
 
 	// region constructor
-	public User(Long id, String userCode, String userName, String gender, Date dateOfBirth, String phone, Major major, String email, String password, List<Assignment> assignments, Set<Subject> subjects) {
+	public User(Long id, String userCode, String userName, String gender, Date dateOfBirth, String phone, Major major, String email, String password, List<Assignment> assignments, List<Subject> subjects) {
 		this.id = id;
 		this.userCode = userCode;
 		this.userName = userName;
@@ -178,12 +177,13 @@ public class User {
 		assignment.setUser(null);
 	}
 
-//	public void AddSubject(Subject subject){
-//		subjects.add(subject);
-//	}
-//
-//	public void RemoveSubject(Subject subject){
-//		assignments.remove(subject);
-//		subject.setUsers(null);
-//	}
+	public void AddSubject(Subject subject){
+		subjects.add(subject);
+		subject.getUsers().add(this);
+	}
+
+	public void RemoveSubject(Subject subject){
+		subjects.remove(subject);
+		subject.getUsers().remove(this);
+	}
 }

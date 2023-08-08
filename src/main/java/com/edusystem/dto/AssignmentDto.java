@@ -17,10 +17,11 @@ public class AssignmentDto {
     private String title;
 
     private Status status;
-
+    //major
     private Grade grade;
 
     private String file;
 
     private Date createdDate;
+    // edit date
 }
