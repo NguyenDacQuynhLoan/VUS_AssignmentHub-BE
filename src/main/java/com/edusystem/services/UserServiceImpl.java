@@ -34,9 +34,11 @@ public class UserServiceImpl implements UserServices{
 	@Override
 	public List<UserDto> getAllUsers(){
 		List<UserDto> userDtoList = new ArrayList<>();
+
+		List<User> userDtoList2 = userRepository.findAll();
+
 		userRepository.findAll()
 				.forEach(e -> userDtoList.add(modelMapper.map(e,UserDto.class)));
-		List<User> allUsers = userRepository.findAll();
 		return userDtoList;
 	}
 

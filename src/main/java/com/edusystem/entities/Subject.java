@@ -28,6 +28,7 @@ public class Subject {
     private Major major;
 
     @ManyToMany(mappedBy = "subjects")
+    @JsonIgnore
     private List<User> users = new ArrayList<>();
 
     // region getter & setter

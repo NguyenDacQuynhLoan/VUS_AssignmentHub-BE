@@ -19,9 +19,9 @@ public class SubjectController {
         return subjectService.getAllSubject();
     }
 
-    @PostMapping
-    public SubjectDto createSubject(@RequestBody SubjectDto model){
-        return subjectService.createSubject(model);
+    @PostMapping("/{userCode}/users")
+    public SubjectDto createSubject(@PathVariable("userCode") String code, @RequestBody SubjectDto model){
+        return subjectService.createSubject(code,model);
     }
 
     @PutMapping

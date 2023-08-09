@@ -168,22 +168,22 @@ public class User {
 	// endregion
 
 	public void AddAssignment(Assignment assignment){
-		assignments.add(assignment);
+		this.assignments.add(assignment);
 		assignment.setUser(this);
 	}
 
 	public void RemoveAssignment(Assignment assignment){
-		assignments.remove(assignment);
+		this.assignments.remove(assignment);
 		assignment.setUser(null);
 	}
 
 	public void AddSubject(Subject subject){
-		subjects.add(subject);
+		this.subjects.add(subject);
 		subject.getUsers().add(this);
 	}
 
 	public void RemoveSubject(Subject subject){
-		subjects.remove(subject);
+		this.subjects.remove(subject);
 		subject.getUsers().remove(this);
 	}
 }

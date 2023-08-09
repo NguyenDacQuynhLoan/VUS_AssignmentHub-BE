@@ -106,7 +106,6 @@ public class Assignment {
 	public Assignment(Long id, String code, String title, Status status, Grade grade, String file, Date createdDate, User user) {
 		this.id = id;
 		this.code = code;
-//		this.userCode = userCode;
 		this.title = title;
 		this.status = status;
 		this.grade = grade;

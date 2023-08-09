@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="122d41cc-e7d4-41aa-af54-9a7c149f2b62" name="Changes" comment="Change folder to lowercase , update entities DTO, User &amp; Asssignment CRUD">
+    <list default="true" id="122d41cc-e7d4-41aa-af54-9a7c149f2b62" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/7.6.1/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6.1/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.6.1/dependencies-accessors/dependencies-accessors.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6.1/dependencies-accessors/dependencies-accessors.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.6.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.6.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.6.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6.1/fileHashes/fileHashes.bin" afterDir="false" />
@@ -13,17 +15,20 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Entities/Subject.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Entities/Subject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Entities/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Entities/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Services/AssignmentServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Services/AssignmentServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Entities/Assignment.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Entities/Assignment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Services/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Services/UserServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/resources/main/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/controllers/SubjectController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/controllers/SubjectController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/dto/AssignmentDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/dto/AssignmentDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/dto/SubjectDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/dto/SubjectDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/dto/UserDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/entities/Assignment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/entities/Assignment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/entities/BaseEntity.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/entities/Subject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/entities/Subject.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/entities/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/enums/Major.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/enums/Major.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/repositories/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/services/Base/CRUDServices.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/services/Base/CRUDServicesImpl.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/services/SubjectServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/services/SubjectServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/services/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/services/UserServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
@@ -175,8 +180,38 @@
     <option name="LAST_COMMIT_MESSAGE" value="fix user-assignment relationship" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/edusystem/services/UserServiceImpl.java</url>
+          <line>41</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/edusystem/services/UserServiceImpl.java</url>
+          <line>39</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/edusystem/entities/User.java</url>
+          <line>181</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/edusystem/services/SubjectServiceImpl.java</url>
+          <line>39</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/edusystem/services/SubjectServiceImpl.java</url>
+          <line>49</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
+        <PinnedItemInfo parentTag="jdk.proxy2.$Proxy110" memberName="h" />
         <PinnedItemInfo parentTag="com.edusystem.entities.User" memberName="subjects" />
         <PinnedItemInfo parentTag="com.edusystem.dto.UserDto" memberName="subjects" />
       </pinned-members>
@@ -185,6 +220,9 @@
       <configuration name="GradleRunConfiguration">
         <watch expression="modelMapper.config" />
       </configuration>
+      <inline-watch fileUrl="file://$PROJECT_DIR$/src/main/java/com/edusystem/entities/User.java" line="181">
+        <watch expression="getUsers" />
+      </inline-watch>
     </watches-manager>
   </component>
 </project>

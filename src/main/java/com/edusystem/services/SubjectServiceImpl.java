@@ -3,6 +3,7 @@ package com.edusystem.services;
 import com.edusystem.dto.SubjectDto;
 import com.edusystem.dto.UserDto;
 import com.edusystem.entities.Subject;
+import com.edusystem.entities.User;
 import com.edusystem.repositories.SubjectRepository;
 import com.edusystem.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SubjectServiceImpl {
@@ -23,24 +25,29 @@ public class SubjectServiceImpl {
     private ModelMapper modelMapper;
 
     public List<SubjectDto> getAllSubject(){
-        Set<UserDto> users = new HashSet<>();
-
-
         List<SubjectDto> subjectDtoList = new ArrayList<>();
+
         subjectRepository.findAll().forEach(e ->
                 subjectDtoList.add(modelMapper.map(e,SubjectDto.class))
         );
         return subjectDtoList;
     }
 
-    public SubjectDto createSubject (SubjectDto model){
+    public SubjectDto createSubject (String userCode ,SubjectDto model){
+        User usertest1 =  userRepository.findBySubjectsCode(model.getCode());
+        List<User> usertest2 =  userRepository.findUsersBySubjectsCode(model.getCode());
+
         Subject subjectByCode = subjectRepository.findByCode(model.getCode());
         if(subjectByCode == null){
-            // add new subject
+
+            // create new subject
             Subject subjectMapped = modelMapper.map(model,Subject.class);
             subjectRepository.save(subjectMapped);
 
-            // add user assigned subject
+            // add subject to user
+            User user =  userRepository.findByUserCode(userCode);
+
+            user.AddSubject(subjectMapped);
 
             return model;
         }
