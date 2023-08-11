@@ -19,6 +19,8 @@ public class UserDto {
 
     public Date dateOfBirth;
 
+    public String location;
+
     public String phone;
 
     public Major major;

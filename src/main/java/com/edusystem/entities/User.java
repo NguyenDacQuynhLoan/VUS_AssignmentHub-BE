@@ -42,6 +42,9 @@ public class User {
 	@Column(name = "user_birthdate")
 	private Date dateOfBirth;
 
+	@Column(name = "user_location")
+	private String location;
+
 	@Column(name = "user_phone",nullable = true)
 	private String phone;
 
@@ -104,6 +107,14 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 	}
 
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
 	public String getPhone() {
 		return phone;
 	}
@@ -150,17 +161,18 @@ public class User {
 	// endregion
 
 	// region constructor
-	public User(Long id, String userCode, String userName, String gender, Date dateOfBirth, String phone, Major major, String email, String password, List<Assignment> assignments, List<Subject> subjects) {
+	public User(Long id, String userCode, String userName, String gender, Date dateOfBirth, String location, String phone, Major major, String email, String password, List<Assignment> assignments, List<Subject> subjects) {
 		this.id = id;
 		this.userCode = userCode;
 		this.userName = userName;
 		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
+		this.location = location;
 		this.phone = phone;
 		this.major = major;
 		this.email = email;
 		this.password = password;
-		this.assignments = new ArrayList<>();
+		this.assignments = assignments;
 		this.subjects = subjects;
 	}
 

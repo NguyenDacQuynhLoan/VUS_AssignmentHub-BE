@@ -32,6 +32,9 @@ public class Assignment {
 	@Column(name = "created_date")
 	private Date createdDate;
 
+	@Column(name = "updated_date")
+	private Date updatedDate;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
 
@@ -92,6 +95,14 @@ public class Assignment {
 		this.createdDate = createdDate;
 	}
 
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+
 	public User getUser() {
 		return user;
 	}
@@ -102,8 +113,10 @@ public class Assignment {
 	// endregion
 
 	// region Constructor
+	public Assignment() {
+	}
 
-	public Assignment(Long id, String code, String title, Status status, Grade grade, String file, Date createdDate, User user) {
+	public Assignment(Long id, String code, String title, Status status, Grade grade, String file, Date createdDate, Date updatedDate, User user) {
 		this.id = id;
 		this.code = code;
 		this.title = title;
@@ -111,10 +124,8 @@ public class Assignment {
 		this.grade = grade;
 		this.file = file;
 		this.createdDate = createdDate;
+		this.updatedDate = updatedDate;
 		this.user = user;
-	}
-
-	public Assignment() {
 	}
 	// endregion
 }

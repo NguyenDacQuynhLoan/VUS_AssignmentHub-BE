@@ -26,4 +26,6 @@ public class AssignmentDto {
     private String file;
 
     private Date createdDate;
+
+    private Date updatedDate;
 }
