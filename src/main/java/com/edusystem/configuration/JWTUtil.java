@@ -13,6 +13,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *  JWT Token configuration
+ */
 @Component
 public class JWTUtil {
     final long ONE_MINUTE_IN_MILLIS = 60000;
