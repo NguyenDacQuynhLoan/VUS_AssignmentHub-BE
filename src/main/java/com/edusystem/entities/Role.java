@@ -44,14 +44,6 @@ public class Role {
         this.name = name;
     }
 
-//    public Set<User> getUsers() {
-//        return users;
-//    }
-
-//    public void setUsers(Set<User> users) {
-//        this.users = users;
-//    }
-
     // endregion
 
     // region constructor
@@ -59,7 +51,6 @@ public class Role {
         this.id = id;
         this.code = code;
         this.name = name;
-//        this.users = users;
     }
     public Role() {
     }

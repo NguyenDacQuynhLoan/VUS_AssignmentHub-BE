@@ -2,6 +2,9 @@ package com.edusystem.dto;
 
 import lombok.Data;
 
+/**
+ * Role DTO model
+ */
 @Data
 public class RoleDto {
 

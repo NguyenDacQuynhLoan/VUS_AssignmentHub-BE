@@ -1,5 +1,9 @@
 package com.edusystem.repositories.Authen;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import com.edusystem.repositories.RoleRepository;
 import com.edusystem.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+/**
+ *  Authentication Repository
+ */
 @Repository
 public class AuthenticateRepository {
 
@@ -21,7 +24,6 @@ public class AuthenticateRepository {
 
     @Autowired
     RoleRepository _roleRepository;
-
 
     public void getUserRoleName(com.edusystem.entities.User user){
         var temp =_roleRepository.findAll().stream()

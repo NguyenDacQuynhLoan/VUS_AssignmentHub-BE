@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * Assignment DTO model
+ */
 @Data
 public class AssignmentDto {
     private Long id;
@@ -23,5 +26,4 @@ public class AssignmentDto {
     private String file;
 
     private Date createdDate;
-    // edit date
 }

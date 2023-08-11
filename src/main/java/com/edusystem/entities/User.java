@@ -167,22 +167,38 @@ public class User {
 	public User() {}
 	// endregion
 
-	public void AddAssignment(Assignment assignment){
+	/**
+	 *  Add Assignment entity to User entity
+	 * @param assignment Assignment entity
+	 */
+	public void addAssignment(Assignment assignment){
 		this.assignments.add(assignment);
 		assignment.setUser(this);
 	}
 
-	public void RemoveAssignment(Assignment assignment){
+	/**
+	 *  Remove assignment entity in detect User entity
+	 * @param assignment Assignment entity
+	 */
+	public void removeAssignment(Assignment assignment){
 		this.assignments.remove(assignment);
 		assignment.setUser(null);
 	}
 
-	public void AddSubject(Subject subject){
+	/**
+	 *  Add Subject entity to User entity
+	 * @param subject Subject entity
+	 */
+	public void addSubject(Subject subject){
 		this.subjects.add(subject);
 		subject.getUsers().add(this);
 	}
 
-	public void RemoveSubject(Subject subject){
+	/**
+	 *  Remove Subject entity in User entity
+	 * @param subject Subject entity
+	 */
+	public void removeSubject(Subject subject){
 		this.subjects.remove(subject);
 		subject.getUsers().remove(this);
 	}

@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * User Controller
+ */
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin(origins = "*")
@@ -15,8 +18,13 @@ public class UserController{
     private UserServiceImpl userServiceImpl;
 
     @GetMapping
-    public List<UserDto> findAllUsers() {
+    public List<UserDto> getAllUsers() {
         return userServiceImpl.getAllUsers();
+    }
+
+    @GetMapping("/email/{userEmail}")
+    public UserDto getUserByEmail(@PathVariable("userEmail") String email) {
+        return userServiceImpl.getUserByEmail(email);
     }
 
     @PostMapping

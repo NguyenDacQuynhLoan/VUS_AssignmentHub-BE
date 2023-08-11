@@ -82,7 +82,7 @@ public class AssignmentServiceImpl{
 
             // add to User by User code
             User user = userRepository.findByUserCode(model.getUserCode());
-            user.AddAssignment(assignment);
+            user.addAssignment(assignment);
 
             return model;
         }
@@ -108,10 +108,10 @@ public class AssignmentServiceImpl{
             User user = userRepository.findByUserCode(model.getUserCode());
 
             // remove old assignment
-            user.RemoveAssignment(instanceAssignment);
+            user.removeAssignment(instanceAssignment);
 
             // add new assignment
-            user.AddAssignment(assignment);
+            user.addAssignment(assignment);
             return model;
         }
         return null;
@@ -137,7 +137,7 @@ public class AssignmentServiceImpl{
             User user = userRepository.findByUserCode(userCode);
 
             // remove assignment in user
-            user.RemoveAssignment(existedAssignment);
+            user.removeAssignment(existedAssignment);
             return true;
         }
         return false;

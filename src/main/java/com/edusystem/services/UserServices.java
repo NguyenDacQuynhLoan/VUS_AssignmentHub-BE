@@ -15,6 +15,13 @@ public interface UserServices {
     public List<UserDto> getAllUsers();
 
     /**
+     *  Get user by Email
+     * @param email user Email
+     * @return detect User
+     */
+    public UserDto getUserByEmail(String email);
+
+    /**
      *  Create new user
      * @param user User DTO
      * @return new User

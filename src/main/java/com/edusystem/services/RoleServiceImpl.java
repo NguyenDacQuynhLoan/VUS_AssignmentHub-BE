@@ -11,21 +11,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ *  Role Services
+ */
 @Service
-public class RoleServiceImpl {
+public class RoleServiceImpl implements RoleServices{
     @Autowired
     private RoleRepository roleRepository;
 
     @Autowired
     private ModelMapper modelMapper;
 
+    /**
+     *  Get all roles
+     * @return list of role
+     */
     public List<RoleDto> getAllRoles() {
         List<RoleDto> roleDtoList = new ArrayList<>();
         roleRepository.findAll().forEach(e -> roleDtoList.add(modelMapper.map(e,RoleDto.class)));
         return roleDtoList;
     }
 
-    public Role getRoleById(Long id){
+    private Role getRoleById(Long id){
         Optional<Role> option = roleRepository.findById(id);
         if(option.isEmpty()){
             return null;
@@ -33,6 +40,11 @@ public class RoleServiceImpl {
         return option.get();
     }
 
+    /**
+     *  Update role
+     * @param model role DTO model
+     * @return updated role
+     */
     public RoleDto updateRole(RoleDto model){
         Role existedRole = roleRepository.findByCode(model.getCode());
         if(existedRole != null && getRoleById(existedRole.getId()) != null){
@@ -42,6 +54,11 @@ public class RoleServiceImpl {
         return null;
     }
 
+    /**
+     *  Create role
+     * @param model role DTO model
+     * @return created role
+     */
     public RoleDto createRole(RoleDto model){
         Role existedRole = roleRepository.findByCode(model.getCode());
         if(existedRole == null){
@@ -52,6 +69,11 @@ public class RoleServiceImpl {
         return null;
     }
 
+    /**
+     *  Delete role
+     * @param code role code
+     * @return true if deleted role
+     */
     public boolean deleteRole(String code){
         Role existedRole = roleRepository.findByCode(code);
         if(existedRole != null){

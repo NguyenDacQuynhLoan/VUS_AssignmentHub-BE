@@ -1,20 +1,21 @@
 package com.edusystem.services;
 
-import com.edusystem.dto.SubjectDto;
-import com.edusystem.dto.UserDto;
-import com.edusystem.entities.Subject;
-import com.edusystem.entities.User;
-import com.edusystem.repositories.SubjectRepository;
-import com.edusystem.repositories.UserRepository;
+import java.util.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import com.edusystem.dto.SubjectDto;
+import com.edusystem.entities.Subject;
+import com.edusystem.entities.User;
+import com.edusystem.repositories.SubjectRepository;
+import com.edusystem.repositories.UserRepository;
 
+/**
+ * Subject services
+ */
 @Service
-public class SubjectServiceImpl {
+public class SubjectServiceImpl implements SubjectServices{
     @Autowired
     private SubjectRepository subjectRepository;
 
@@ -24,45 +25,74 @@ public class SubjectServiceImpl {
     @Autowired
     private ModelMapper modelMapper;
 
+    /**
+     *  Get all subject
+     * @return
+     */
     public List<SubjectDto> getAllSubject(){
         List<SubjectDto> subjectDtoList = new ArrayList<>();
 
         subjectRepository.findAll().forEach(e ->
                 subjectDtoList.add(modelMapper.map(e,SubjectDto.class))
         );
+
         return subjectDtoList;
     }
 
+    /**
+     *  Create new subject
+     * @param userCode user Code
+     * @param model Subject DTO model
+     * @return new Subject and add subject to user
+     */
     public SubjectDto createSubject (String userCode ,SubjectDto model){
-        User usertest1 =  userRepository.findBySubjectsCode(model.getCode());
-        List<User> usertest2 =  userRepository.findUsersBySubjectsCode(model.getCode());
-
         Subject subjectByCode = subjectRepository.findByCode(model.getCode());
-        if(subjectByCode == null){
 
+        if(subjectByCode == null){
             // create new subject
             Subject subjectMapped = modelMapper.map(model,Subject.class);
             subjectRepository.save(subjectMapped);
 
-            // add subject to user
+            // add subject in user
             User user =  userRepository.findByUserCode(userCode);
-
-            user.AddSubject(subjectMapped);
+            user.addSubject(subjectMapped);
+            userRepository.save(user);
 
             return model;
         }
         return null;
     }
 
-    public SubjectDto updateSubject (SubjectDto model){
+    /**
+     *  Update subject
+     * @param userCode User code
+     * @param model Subject DTO model
+     * @return updated Subject and subject in User
+     */
+    public SubjectDto updateSubject (String userCode ,SubjectDto model){
         Subject subjectByCode = subjectRepository.findByCode(model.getCode());
+
         if(subjectByCode != null){
-            subjectRepository.save(subjectByCode);
+            // update subject
+            Subject subjectMapped = modelMapper.map(model,Subject.class);
+            subjectRepository.save(subjectMapped);
+
+            // update subject in user
+            User user = userRepository.findByUserCode(userCode);
+            user.removeSubject(subjectByCode);
+            user.addSubject(subjectMapped);
+            userRepository.save(user);
+
             return model;
         }
         return null;
     }
 
+    /**
+     *  Delete subject
+     * @param code Subject code
+     * @return true if deleted
+     */
     public boolean deleteSubject(String code){
         Subject subjectByCode = subjectRepository.findByCode(code);
         if( subjectByCode != null){

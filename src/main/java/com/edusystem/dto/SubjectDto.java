@@ -3,11 +3,9 @@ package com.edusystem.dto;
 import com.edusystem.enums.Major;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+/**
+ * Subject DTO model
+ */
 @Data
 public class SubjectDto {
 

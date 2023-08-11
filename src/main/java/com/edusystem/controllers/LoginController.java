@@ -8,17 +8,20 @@ import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 
 import com.edusystem.configuration.JWTUtil;
-import com.edusystem.configuration.SecurityConfig;
+import com.edusystem.configuration._SecurityConfig;
 
 import com.edusystem.dto.LoginDto;
 import com.edusystem.repositories.Authen.AuthenticateRepository;
 
+/**
+ *  Login Controller
+ */
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class LoginController {
-    private  final SecurityConfig _securityConfig;
+    private  final _SecurityConfig _securityConfig;
     private final AuthenticationManager _authenticationManager;
     private final AuthenticateRepository _authenticateRepository;
     private final JWTUtil _jwtUtil;

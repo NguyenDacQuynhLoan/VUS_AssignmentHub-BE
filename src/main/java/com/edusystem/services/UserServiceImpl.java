@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import com.edusystem.configuration.SecurityConfig;
+import com.edusystem.configuration._SecurityConfig;
 import com.edusystem.entities.User;
 import com.edusystem.repositories.UserRepository;
 import com.edusystem.dto.UserDto;
@@ -15,11 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * User services
+ */
 @Service
 @Transactional(rollbackFor = {SQLException.class},timeout = 500)
 public class UserServiceImpl implements UserServices{
 	@Autowired
-	private SecurityConfig securityConfig;
+	private _SecurityConfig securityConfig;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -40,6 +43,17 @@ public class UserServiceImpl implements UserServices{
 		userRepository.findAll()
 				.forEach(e -> userDtoList.add(modelMapper.map(e,UserDto.class)));
 		return userDtoList;
+	}
+
+	/**
+	 * Get user by Email
+	 * @param email user Email
+	 * @return User by email
+	 */
+	@Override
+	public UserDto getUserByEmail(String email) {
+		User userByMail = userRepository.findByEmail(email);
+		return modelMapper.map(userByMail,UserDto.class);
 	}
 
 	/**

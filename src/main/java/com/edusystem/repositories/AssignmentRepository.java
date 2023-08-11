@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Assignment Repository
+ */
 @Repository
 public interface AssignmentRepository extends JpaRepository<Assignment,Long> {
     public Assignment findByCode(String code);

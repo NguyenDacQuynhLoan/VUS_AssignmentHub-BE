@@ -5,8 +5,15 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Project configuration
+ */
 @Configuration
-public class ApplicationConfiguration {
+public class _ApplicationConfiguration {
+    /**
+     *  Configuration model mapper transient
+     * @return config model mapper
+     */
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
