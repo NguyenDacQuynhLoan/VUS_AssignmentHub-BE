@@ -7,13 +7,16 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import com.edusystem.configuration._SecurityConfig;
+import com.edusystem.dto.ChangePassword;
 import com.edusystem.entities.User;
+import com.edusystem.enums.Major;
 import com.edusystem.repositories.UserRepository;
 import com.edusystem.dto.UserDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * User services
@@ -76,14 +79,33 @@ public class UserServiceImpl implements UserServices{
 	 */
 	@Override
 	public UserDto createUser(UserDto user){
-		User userByCode = userRepository.findByUserCode(user.getUserCode());
-		if(userByCode == null){
+
+		if( userRepository.findByUserCode(user.getUserCode()) == null
+		&&  userRepository.findByEmail(user.getEmail())		  == null){
 			String encodedPassword = securityConfig
 					.passwordEncoder()
 					.encode(user.getPassword());
 
 			user.setPassword(encodedPassword);
 
+//			switch (user.getMajor())
+//			{
+//				case Computer :
+//				{
+//					// USER list null
+//					if(userRepository.findAll().stream().count() == 0){
+//						user.setUserCode("CP001");
+//					}else{
+//						userRepository.findAll().stream().filter(e ->
+//								Integer.parseInt(e.getUserCode().substring(2)) > 1
+//						).findFirst();
+//					}
+//					// user list != null
+//
+//				}
+//
+//				break;
+//			}
 			User userConverted = modelMapper.map(user,User.class);
 
 			userRepository.save(userConverted);
@@ -101,23 +123,40 @@ public class UserServiceImpl implements UserServices{
 	 */
 	@Override
 	public UserDto updateUser(UserDto user){
-		User userByCode = userRepository.findByUserCode(user.getUserCode());
-		if(userByCode != null && getUserById(userByCode.getId()) != null){
-			if(user.getPassword().equals(userByCode.getPassword())){
-				String encodedPassword = securityConfig
-						.passwordEncoder()
-						.encode(user.getPassword());
-				user.setPassword(encodedPassword);
-			}
-			User userMapped = modelMapper.map(user,User.class);
-			userMapped.setId(userMapped.getId());
-			userRepository.save(userMapped);
+		try {
+			User userByCode = userRepository.findByUserCode(user.getUserCode());
 
-			return user;
-		}else {
+			if(userByCode != null) {
+				User userMapped = modelMapper.map(user, User.class);
+				userMapped.setPassword(userByCode.getPassword());
+				userMapped.setId(userByCode.getId());
+				userRepository.save(userMapped);
+
+				return user;
+			}
+			return null;
+		}catch(Exception error){
 			throw new NoSuchElementException("Existed User with code is : " + user.getUserCode());
 		}
 	}
+
+	/**
+	 *  Update User password
+	 * @param model Change Password model
+	 * @return true if password is updated
+	 */
+	public boolean updateUserPassword(ChangePassword model) {
+			User userbyCode = userRepository.findByUserCode(model.getUserCode());
+			if(model.getOldPassword().equals(userbyCode.getPassword())){
+				String encodedPassword = securityConfig
+						.passwordEncoder()
+						.encode(model.getNewPassword());
+				userbyCode.setPassword(encodedPassword);
+				return true;
+			}
+		return false;
+	}
+
 
 	/**
 	 *  Delete user

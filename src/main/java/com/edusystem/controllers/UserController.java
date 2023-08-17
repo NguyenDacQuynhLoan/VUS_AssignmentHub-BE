@@ -1,5 +1,6 @@
 package com.edusystem.controllers;
 
+import com.edusystem.dto.ChangePassword;
 import com.edusystem.services.UserServiceImpl;
 import com.edusystem.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,12 @@ public class UserController{
         return userServiceImpl.updateUser(model);
     }
 
-    @DeleteMapping("/code/{code}")
+    @PutMapping("/updatePassword")
+    public boolean updateUserPassword(@RequestBody ChangePassword model){
+        return userServiceImpl.updateUserPassword(model);
+    }
+
+    @DeleteMapping("/{code}")
     public boolean deleteUser(@PathVariable("code") String code){
         return userServiceImpl.DeleteUser(code);
     }

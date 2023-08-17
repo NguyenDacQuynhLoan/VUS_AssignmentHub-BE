@@ -21,8 +21,8 @@ public class AssignmentController {
     public List<AssignmentDto> getAllAssignment() {
         return assignmentService.getAllAssignments();
     }
-    @GetMapping("/userCode/{userCode}")
-    public List<AssignmentDto> getAllAssignments(@PathVariable("userCode") String userCode) {
+    @GetMapping("/{userCode}/user")
+    public List<AssignmentDto> getAssignmentByCode(@PathVariable("userCode") String userCode) {
         return assignmentService.getAssignmentsByUserCode(userCode);
     }
 
@@ -40,7 +40,7 @@ public class AssignmentController {
         return assignmentService.updateAssignment(model);
     }
 
-    @DeleteMapping("/code/{code}")
+    @DeleteMapping("/{code}")
     public boolean deleteAssignment(@PathVariable("code") String code) {
         return assignmentService.deleteAssignment(code);
     }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  *  Assignment Services
@@ -33,10 +34,13 @@ public class AssignmentServiceImpl{
      */
     public List<AssignmentDto> getAllAssignments() {
         List<AssignmentDto> listAssignmentDto  = new ArrayList<>();
-        assignmentRepository.findAll()
+        listAssignmentDto = assignmentRepository.findAll()
                 .stream()
-                .forEach(e ->
-                listAssignmentDto.add(modelMapper.map(e,AssignmentDto.class)));
+                .map(e ->{
+                    AssignmentDto dto = modelMapper.map(e,AssignmentDto.class);
+                    dto.setUserCode(e.getUser().getUserCode());
+                    return  dto;
+                }).collect(Collectors.toList());
         return  listAssignmentDto;
     }
 
@@ -47,11 +51,14 @@ public class AssignmentServiceImpl{
      */
     public List<AssignmentDto> getAssignmentsByUserCode(String code){
         List<AssignmentDto> listAssignmentDto = new ArrayList<>();
-        assignmentRepository.findByUserUserCode(code)
+        listAssignmentDto = assignmentRepository.findByUserUserCode(code)
                 .stream()
-                .forEach(e ->
-                    listAssignmentDto.add(modelMapper.map(e,AssignmentDto.class)));;
-        return listAssignmentDto;
+                .map(e ->{
+                    AssignmentDto dto = modelMapper.map(e,AssignmentDto.class);
+                    dto.setUserCode(code);
+                    return  dto;
+                }).collect(Collectors.toList());
+        return  listAssignmentDto;
     }
 
     /**
