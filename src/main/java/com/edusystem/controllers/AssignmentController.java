@@ -1,5 +1,6 @@
 package com.edusystem.controllers;
 
+import com.edusystem.dto.UserDto;
 import com.edusystem.services.AssignmentServiceImpl;
 import com.edusystem.dto.AssignmentDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ public class AssignmentController {
         return assignmentService.getAllAssignments();
     }
     @GetMapping("/{userCode}/user")
-    public List<AssignmentDto> getAssignmentByCode(@PathVariable("userCode") String userCode) {
-        return assignmentService.getAssignmentsByUserCode(userCode);
+    public UserDto getAssignmentByCode(@PathVariable("userCode") String userCode) {
+        return assignmentService.getUserOfAssignment(userCode);
     }
 
     @GetMapping("/filter/{keyword}")

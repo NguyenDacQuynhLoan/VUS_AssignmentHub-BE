@@ -1,5 +1,6 @@
 package com.edusystem.services;
 
+import com.edusystem.dto.UserDto;
 import com.edusystem.entities.Assignment;
 import com.edusystem.entities.User;
 import com.edusystem.repositories.AssignmentRepository;
@@ -33,15 +34,23 @@ public class AssignmentServiceImpl{
      * @return assignment list
      */
     public List<AssignmentDto> getAllAssignments() {
-        List<AssignmentDto> listAssignmentDto  = new ArrayList<>();
-        listAssignmentDto = assignmentRepository.findAll()
+        return assignmentRepository.findAll()
                 .stream()
                 .map(e ->{
                     AssignmentDto dto = modelMapper.map(e,AssignmentDto.class);
                     dto.setUserCode(e.getUser().getUserCode());
                     return  dto;
                 }).collect(Collectors.toList());
-        return  listAssignmentDto;
+    }
+
+    public UserDto getUserOfAssignment(String userCode){
+        User user = userRepository.findByUserCode(userCode);
+        if(user != null){
+            UserDto dto = modelMapper.map(user,UserDto.class);
+            dto.setAssignments(null);
+            return dto;
+        }
+        return null;
     }
 
     /**
