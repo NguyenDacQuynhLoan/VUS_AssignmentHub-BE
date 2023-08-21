@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/roles")
 @CrossOrigin(origins = "*")
-public class RoleController {
+public class RoleController extends ExceptionController {
     @Autowired
     RoleServiceImpl _roleService;
 

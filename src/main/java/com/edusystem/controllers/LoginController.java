@@ -20,7 +20,7 @@ import com.edusystem.repositories.Authen.AuthenticateRepository;
 @RequestMapping("/auth")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-public class LoginController {
+public class LoginController extends ExceptionController{
     private  final _SecurityConfig _securityConfig;
     private final AuthenticationManager _authenticationManager;
     private final AuthenticateRepository _authenticateRepository;

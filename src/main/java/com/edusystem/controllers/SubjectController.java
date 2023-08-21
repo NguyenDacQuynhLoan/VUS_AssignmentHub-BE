@@ -12,7 +12,7 @@ import com.edusystem.services.SubjectServiceImpl;
  */
 @RestController
 @RequestMapping("/api/subjects")
-public class SubjectController {
+public class SubjectController extends ExceptionController{
     @Autowired
     private SubjectServiceImpl subjectService;
 

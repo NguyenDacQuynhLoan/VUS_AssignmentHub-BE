@@ -1,7 +1,9 @@
 package com.edusystem.configuration;
 
+import com.edusystem.repositories.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.internal.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -22,12 +24,16 @@ public class JWTUtil {
     final long EXPIRATION_TIME = 8 * 60 * ONE_MINUTE_IN_MILLIS;
     final private Key jwtKey = new SecretKeySpec("YXNkZnNhZGZhc2Zhc2RmYXMzNDM0ZGZnc2Znc2Zn".getBytes(), SignatureAlgorithm.HS256.getJcaName());
 
+    @Autowired
+    UserRepository userRepository;
+
     // 1.1 tạo token
     public String createToken(Map<String,Object> claims, UserDetails userDetails){
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .claim("authorities",userDetails.getAuthorities())
+                .claim("code",userRepository.findByEmail(userDetails.getUsername()).getUserCode())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+ EXPIRATION_TIME))
                 .signWith(jwtKey, SignatureAlgorithm.HS256)

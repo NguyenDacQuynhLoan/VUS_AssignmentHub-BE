@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/assignments")
 @CrossOrigin(origins = "*")
-public class AssignmentController {
+public class AssignmentController extends ExceptionController{
     @Autowired
     private AssignmentServiceImpl assignmentService;
 

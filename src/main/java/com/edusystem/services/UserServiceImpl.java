@@ -39,13 +39,17 @@ public class UserServiceImpl implements UserServices{
 	 */
 	@Override
 	public List<UserDto> getAllUsers(){
-		List<UserDto> userDtoList = new ArrayList<>();
+		try{
+			List<UserDto> userDtoList = new ArrayList<>();
 
-		List<User> userDtoList2 = userRepository.findAll();
+			List<User> userDtoList2 = userRepository.findAll();
 
-		userRepository.findAll()
-				.forEach(e -> userDtoList.add(modelMapper.map(e,UserDto.class)));
-		return userDtoList;
+			userRepository.findAll()
+					.forEach(e -> userDtoList.add(modelMapper.map(e,UserDto.class)));
+			return userDtoList;
+		}catch (Exception error){
+			throw new ExceptionService(error.getMessage());
+		}
 	}
 
 	/**
@@ -79,14 +83,24 @@ public class UserServiceImpl implements UserServices{
 	 */
 	@Override
 	public UserDto createUser(UserDto user){
+		try{
+			// validate
+//			if(userRepository.findByUserCode(user.getUserCode()) != null){
+//				throw new RuntimeException(user.getUserCode() + " is existed");
+//			}
 
-		if( userRepository.findByUserCode(user.getUserCode()) == null
-		&&  userRepository.findByEmail(user.getEmail())		  == null){
+			if(userRepository.findByEmail(user.getEmail()) != null){
+				throw new ExceptionService(user.getEmail() + " is existed");
+			}
+
+			// encode password
 			String encodedPassword = securityConfig
 					.passwordEncoder()
 					.encode(user.getPassword());
-
 			user.setPassword(encodedPassword);
+
+			// convert to DTO
+			User userConverted = modelMapper.map(user,User.class);
 
 //			switch (user.getMajor())
 //			{
@@ -106,13 +120,11 @@ public class UserServiceImpl implements UserServices{
 //
 //				break;
 //			}
-			User userConverted = modelMapper.map(user,User.class);
 
 			userRepository.save(userConverted);
-
 			return user;
-		}else {
-			throw new NoSuchElementException("Existed User with code is: " + user.getUserCode());
+		}catch (Exception error){
+			throw new ExceptionService(error.getMessage());
 		}
 	}
 
@@ -136,7 +148,7 @@ public class UserServiceImpl implements UserServices{
 			}
 			return null;
 		}catch(Exception error){
-			throw new NoSuchElementException("Existed User with code is : " + user.getUserCode());
+			throw new ExceptionService(error.getMessage());
 		}
 	}
 
@@ -146,6 +158,7 @@ public class UserServiceImpl implements UserServices{
 	 * @return true if password is updated
 	 */
 	public boolean updateUserPassword(ChangePassword model) {
+		try{
 			User userbyCode = userRepository.findByUserCode(model.getUserCode());
 			if(model.getOldPassword().equals(userbyCode.getPassword())){
 				String encodedPassword = securityConfig
@@ -154,7 +167,10 @@ public class UserServiceImpl implements UserServices{
 				userbyCode.setPassword(encodedPassword);
 				return true;
 			}
-		return false;
+			return false;
+		}catch (Exception error) {
+			throw new ExceptionService(error.getMessage());
+		}
 	}
 
 
@@ -165,12 +181,16 @@ public class UserServiceImpl implements UserServices{
 	 */
 	@Override
 	public boolean DeleteUser (String code){
-		User userByCode = userRepository.findByUserCode(code);
-		User existUser = getUserById(userByCode.getId());
-		if(existUser != null){
-			userRepository.deleteById(userByCode.getId());
-			return true;
+		try{
+			User userByCode = userRepository.findByUserCode(code);
+			User existUser = getUserById(userByCode.getId());
+			if(existUser != null){
+				userRepository.deleteById(userByCode.getId());
+				return true;
+			}
+			return false;
+		}catch (Exception error){
+			throw new ExceptionService(error.getMessage());
 		}
-		return false;
 	}
 }
