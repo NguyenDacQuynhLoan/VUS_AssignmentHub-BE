@@ -16,7 +16,6 @@ import com.edusystem.enums.Major;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.*;
 
@@ -36,20 +35,23 @@ public class User {
 	@Column(name = "user_name")
 	private String userName;
 
+//	@Column(name = "user_role")
+//	private Role userRole;
+
+	@Column(name = "user_major")
+	private Major major;
+
 	@Column(name = "user_gender")
 	private String gender;
 
-	@Column(name = "user_birthdate")
+	@Column(name = "user_birthdate",nullable = true)
 	private Date dateOfBirth;
 
-	@Column(name = "user_location")
+	@Column(name = "user_location",nullable = true)
 	private String location;
 
 	@Column(name = "user_phone",nullable = true)
 	private String phone;
-
-	@Column(name = "user_major",nullable = true)
-	private Major major;
 
 	private String email;
 
@@ -161,15 +163,15 @@ public class User {
 	// endregion
 
 	// region constructor
-	public User(Long id, String userCode, String userName, String gender, Date dateOfBirth, String location, String phone, Major major, String email, String password, List<Assignment> assignments, List<Subject> subjects) {
+	public User(Long id, String userCode, String userName, Major major, String gender, Date dateOfBirth, String location, String phone, String email, String password, List<Assignment> assignments, List<Subject> subjects) {
 		this.id = id;
 		this.userCode = userCode;
 		this.userName = userName;
+		this.major = major;
 		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
 		this.location = location;
 		this.phone = phone;
-		this.major = major;
 		this.email = email;
 		this.password = password;
 		this.assignments = assignments;

@@ -1,6 +1,7 @@
 package com.edusystem.entities;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -47,7 +48,7 @@ public class Role {
     // endregion
 
     // region constructor
-    public Role(Long id, String code, String name, Set<User> users) {
+    public Role(Long id, String code, String name) {
         this.id = id;
         this.code = code;
         this.name = name;

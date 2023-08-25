@@ -41,10 +41,10 @@ public class UserController extends ExceptionController{
         }
     }
 
-    @GetMapping("/email/{userEmail}")
-    public UserDto getUserByEmail(@PathVariable("userEmail") String email) {
-        return userServiceImpl.getUserByEmail(email);
-    }
+//    @GetMapping("/email/{userEmail}")
+//    public UserDto getUserByEmail(@PathVariable("userEmail") String email) {
+//        return userServiceImpl.getUserByEmail(email);
+//    }
 
     @PostMapping
     public ResponseEntity<ApiResponse<UserDto>> createUser(@RequestBody UserDto model){

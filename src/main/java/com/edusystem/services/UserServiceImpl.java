@@ -1,22 +1,26 @@
 package com.edusystem.services;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 import com.edusystem.configuration._SecurityConfig;
 import com.edusystem.dto.ChangePassword;
+import com.edusystem.entities.Assignment;
+import com.edusystem.entities.Role;
+import com.edusystem.entities.Subject;
 import com.edusystem.entities.User;
 import com.edusystem.enums.Major;
+import com.edusystem.repositories.RoleRepository;
 import com.edusystem.repositories.UserRepository;
 import com.edusystem.dto.UserDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.annotation.PostConstruct;
 
 /**
  * User services
@@ -31,6 +35,11 @@ public class UserServiceImpl implements UserServices{
 	private UserRepository userRepository;
 
 	@Autowired
+	private RoleRepository roleRepository;
+
+	@Autowired private PasswordEncoder encoder;
+
+	@Autowired
 	private ModelMapper modelMapper;
 
 	/**
@@ -41,9 +50,6 @@ public class UserServiceImpl implements UserServices{
 	public List<UserDto> getAllUsers(){
 		try{
 			List<UserDto> userDtoList = new ArrayList<>();
-
-			List<User> userDtoList2 = userRepository.findAll();
-
 			userRepository.findAll()
 					.forEach(e -> userDtoList.add(modelMapper.map(e,UserDto.class)));
 			return userDtoList;
@@ -52,16 +58,59 @@ public class UserServiceImpl implements UserServices{
 		}
 	}
 
-	/**
-	 * Get user by Email
-	 * @param email user Email
-	 * @return User by email
-	 */
-	@Override
-	public UserDto getUserByEmail(String email) {
-		User userByMail = userRepository.findByEmail(email);
-		return modelMapper.map(userByMail,UserDto.class);
+	public void generateDefaultUser(){
+		Role roleAdmin = new Role(Long.valueOf(1),"ADMIN","Administration");
+		Role roleStudent = new Role(Long.valueOf(2),"STUDENT","Student");
+
+		roleRepository.save(roleAdmin);
+		roleRepository.save(roleStudent);
+		roleRepository.flush();
+
+		List<Assignment> emptyAssignmentList = new ArrayList<>();
+		List<Subject> emptySubjectList = new ArrayList<>();
+		User userAdmin = new User(
+				Long.valueOf(1),
+				"Admin001",
+				"System Administration",
+				Major.Software,
+				"Female",
+				new Date("2012-12-12"),
+				"HCMC",
+				"090xx",
+				"admin@gmail",
+				encoder.encode("admin123"),
+				emptyAssignmentList,
+				emptySubjectList
+		);
+
+		User userStudent = new User(
+				Long.valueOf(1),
+				"Student001",
+				"Student VUS",
+				Major.Software,
+				"Female",
+				new Date("2012-12-12"),
+				"HCMC",
+				"090xx",
+				"student@gmail",
+				encoder.encode("student123"),
+				emptyAssignmentList,
+				emptySubjectList
+		);
+		userRepository.save(userAdmin);
+		userRepository.save(userStudent);
+		userRepository.flush();
 	}
+//	/**
+//	 * Get user by Email
+//	 * @param email user Email
+//	 * @return User by email
+//	 */
+//	@Override
+//	public UserDto getUserByEmail(String email) {
+//		User userByMail = userRepository.findByEmail(email);
+//		return modelMapper.map(userByMail,UserDto.class);
+//	}
 
 	/**
 	 * Get user by Id
@@ -85,9 +134,9 @@ public class UserServiceImpl implements UserServices{
 	public UserDto createUser(UserDto user){
 		try{
 			// validate
-//			if(userRepository.findByUserCode(user.getUserCode()) != null){
-//				throw new RuntimeException(user.getUserCode() + " is existed");
-//			}
+			if(userRepository.findByUserCode(user.getUserCode()) != null){
+				throw new RuntimeException(user.getUserCode() + " is existed");
+			}
 
 			if(userRepository.findByEmail(user.getEmail()) != null){
 				throw new ExceptionService(user.getEmail() + " is existed");
@@ -101,25 +150,6 @@ public class UserServiceImpl implements UserServices{
 
 			// convert to DTO
 			User userConverted = modelMapper.map(user,User.class);
-
-//			switch (user.getMajor())
-//			{
-//				case Computer :
-//				{
-//					// USER list null
-//					if(userRepository.findAll().stream().count() == 0){
-//						user.setUserCode("CP001");
-//					}else{
-//						userRepository.findAll().stream().filter(e ->
-//								Integer.parseInt(e.getUserCode().substring(2)) > 1
-//						).findFirst();
-//					}
-//					// user list != null
-//
-//				}
-//
-//				break;
-//			}
 
 			userRepository.save(userConverted);
 			return user;
@@ -136,17 +166,25 @@ public class UserServiceImpl implements UserServices{
 	@Override
 	public UserDto updateUser(UserDto user){
 		try {
-			User userByCode = userRepository.findByUserCode(user.getUserCode());
-
-			if(userByCode != null) {
-				User userMapped = modelMapper.map(user, User.class);
-				userMapped.setPassword(userByCode.getPassword());
-				userMapped.setId(userByCode.getId());
-				userRepository.save(userMapped);
-
-				return user;
+			if(userRepository.findByUserCode(user.getUserCode()) != null){
+				throw new RuntimeException(user.getUserCode() + " is existed");
 			}
-			return null;
+
+			if(userRepository.findByEmail(user.getEmail()) != null){
+				throw new ExceptionService(user.getEmail() + " is existed");
+			}
+
+			User userByCode = userRepository.findByUserCode(user.getUserCode());
+			if(userByCode == null) {
+				throw new ExceptionService("Can\'t find User " + user.getUserCode());
+			}
+
+			User userMapped = modelMapper.map(user, User.class);
+			userMapped.setPassword(userByCode.getPassword());
+			userMapped.setId(userByCode.getId());
+			userRepository.save(userMapped);
+
+			return user;
 		}catch(Exception error){
 			throw new ExceptionService(error.getMessage());
 		}
@@ -165,6 +203,7 @@ public class UserServiceImpl implements UserServices{
 						.passwordEncoder()
 						.encode(model.getNewPassword());
 				userbyCode.setPassword(encodedPassword);
+				userRepository.save(userbyCode);
 				return true;
 			}
 			return false;
@@ -172,7 +211,6 @@ public class UserServiceImpl implements UserServices{
 			throw new ExceptionService(error.getMessage());
 		}
 	}
-
 
 	/**
 	 *  Delete user

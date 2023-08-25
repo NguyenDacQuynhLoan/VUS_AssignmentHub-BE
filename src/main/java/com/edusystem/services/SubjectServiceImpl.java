@@ -30,13 +30,17 @@ public class SubjectServiceImpl implements SubjectServices{
      * @return
      */
     public List<SubjectDto> getAllSubject(){
-        List<SubjectDto> subjectDtoList = new ArrayList<>();
+        try{
+            List<SubjectDto> subjectDtoList = new ArrayList<>();
 
-        subjectRepository.findAll().forEach(e ->
-                subjectDtoList.add(modelMapper.map(e,SubjectDto.class))
-        );
+            subjectRepository.findAll().forEach(e ->
+                    subjectDtoList.add(modelMapper.map(e,SubjectDto.class))
+            );
 
-        return subjectDtoList;
+            return subjectDtoList;
+        }catch(Exception error){
+            throw new ExceptionService(error.getMessage());
+        }
     }
 
     /**
@@ -46,9 +50,13 @@ public class SubjectServiceImpl implements SubjectServices{
      * @return new Subject and add subject to user
      */
     public SubjectDto createSubject (String userCode ,SubjectDto model){
-        Subject subjectByCode = subjectRepository.findByCode(model.getCode());
+        try{
+            Subject subjectByCode = subjectRepository.findByCode(model.getCode());
 
-        if(subjectByCode == null){
+            if(subjectByCode != null){
+                throw  new ExceptionService("Subject is existed");
+            }
+
             // create new subject
             Subject subjectMapped = modelMapper.map(model,Subject.class);
             subjectRepository.save(subjectMapped);
@@ -59,8 +67,9 @@ public class SubjectServiceImpl implements SubjectServices{
             userRepository.save(user);
 
             return model;
+        }catch(Exception error){
+            throw new ExceptionService(error.getMessage());
         }
-        return null;
     }
 
     /**
@@ -70,9 +79,12 @@ public class SubjectServiceImpl implements SubjectServices{
      * @return updated Subject and subject in User
      */
     public SubjectDto updateSubject (String userCode ,SubjectDto model){
-        Subject subjectByCode = subjectRepository.findByCode(model.getCode());
+        try {
+            Subject subjectByCode = subjectRepository.findByCode(model.getCode());
+            if(subjectByCode == null){
+                throw new ExceptionService("Can\'t find Subject " + model.getName());
+            }
 
-        if(subjectByCode != null){
             // update subject
             Subject subjectMapped = modelMapper.map(model,Subject.class);
             subjectRepository.save(subjectMapped);
@@ -81,11 +93,13 @@ public class SubjectServiceImpl implements SubjectServices{
             User user = userRepository.findByUserCode(userCode);
             user.removeSubject(subjectByCode);
             user.addSubject(subjectMapped);
-            userRepository.save(user);
 
+            userRepository.save(user);
             return model;
+
+        }catch (Exception error){
+            throw new ExceptionService(error.getMessage());
         }
-        return null;
     }
 
     /**
@@ -94,11 +108,17 @@ public class SubjectServiceImpl implements SubjectServices{
      * @return true if deleted
      */
     public boolean deleteSubject(String code){
-        Subject subjectByCode = subjectRepository.findByCode(code);
-        if( subjectByCode != null){
+        try{
+            Subject subjectByCode = subjectRepository.findByCode(code);
+            if(subjectByCode == null) {
+                throw new ExceptionService("Can\'t find Subject " + subjectByCode.getName());
+            }
+
             subjectRepository.deleteById(subjectByCode.getId());
             return true;
+
+        }catch(Exception error){
+            throw new ExceptionService(error.getMessage());
         }
-        return false;
     }
 }

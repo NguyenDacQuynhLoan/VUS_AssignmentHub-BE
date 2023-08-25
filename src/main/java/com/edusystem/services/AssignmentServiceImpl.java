@@ -34,23 +34,37 @@ public class AssignmentServiceImpl{
      * @return assignment list
      */
     public List<AssignmentDto> getAllAssignments() {
-        return assignmentRepository.findAll()
-                .stream()
-                .map(e ->{
-                    AssignmentDto dto = modelMapper.map(e,AssignmentDto.class);
-                    dto.setUserCode(e.getUser().getUserCode());
-                    return  dto;
-                }).collect(Collectors.toList());
+        try {
+            return assignmentRepository.findAll()
+                    .stream()
+                    .map(e ->{
+                        AssignmentDto dto = modelMapper.map(e,AssignmentDto.class);
+                        dto.setUserCode(e.getUser().getUserCode());
+                        return  dto;
+                    }).collect(Collectors.toList());
+        }catch (Exception error) {
+            throw new ExceptionService(error.getMessage());
+        }
     }
 
+    /**
+     * Get Owner User of Assignment
+     * @param userCode User Code
+     * @return User information
+     */
     public UserDto getUserOfAssignment(String userCode){
-        User user = userRepository.findByUserCode(userCode);
-        if(user != null){
+        try{
+            User user = userRepository.findByUserCode(userCode);
+            if(user == null){
+                throw new ExceptionService("Can\'t find User");
+            }
+
             UserDto dto = modelMapper.map(user,UserDto.class);
             dto.setAssignments(null);
             return dto;
+        }catch (Exception error){
+            throw new ExceptionService(error.getMessage());
         }
-        return null;
     }
 
     /**
@@ -59,15 +73,19 @@ public class AssignmentServiceImpl{
      * @return list of assignments
      */
     public List<AssignmentDto> getAssignmentsByUserCode(String code){
-        List<AssignmentDto> listAssignmentDto = new ArrayList<>();
-        listAssignmentDto = assignmentRepository.findByUserUserCode(code)
-                .stream()
-                .map(e ->{
-                    AssignmentDto dto = modelMapper.map(e,AssignmentDto.class);
-                    dto.setUserCode(code);
-                    return  dto;
-                }).collect(Collectors.toList());
-        return  listAssignmentDto;
+        try{
+            List<AssignmentDto> listAssignmentDto = new ArrayList<>();
+            listAssignmentDto = assignmentRepository.findByUserUserCode(code)
+                    .stream()
+                    .map(e ->{
+                        AssignmentDto dto = modelMapper.map(e,AssignmentDto.class);
+                        dto.setUserCode(code);
+                        return  dto;
+                    }).collect(Collectors.toList());
+            return  listAssignmentDto;
+        }catch (Exception error){
+            throw new ExceptionService(error.getMessage());
+        }
     }
 
     /**
@@ -89,9 +107,15 @@ public class AssignmentServiceImpl{
      * @return new Assignment DTO
      */
     public AssignmentDto createAssignment(AssignmentDto model){
-        if (assignmentRepository.findByCode(model.getCode()) == null
-        &&  getAssignmentById(model.getId())                 == null)
-        {
+        try{
+            if(assignmentRepository.findByCode(model.getCode()) != null){
+                throw new ExceptionService("Assignment Code is existed");
+            }
+
+            if(getAssignmentById(model.getId()) == null){
+                throw new ExceptionService("Assignment is existed");
+            }
+
             // convert model to entity
             Assignment assignment = modelMapper.map(model,Assignment.class);
             assignmentRepository.save(assignment);
@@ -101,8 +125,9 @@ public class AssignmentServiceImpl{
             user.addAssignment(assignment);
 
             return model;
+        }catch(ExceptionService error){
+            throw new ExceptionService(error.getMessage());
         }
-        return null;
     }
 
     /**
@@ -111,11 +136,16 @@ public class AssignmentServiceImpl{
      * @return updated assignment DTO
      */
     public AssignmentDto updateAssignment(AssignmentDto model){
-        Assignment instanceAssignment = assignmentRepository.findByCode(model.getCode());
+        try{
+            Assignment instanceAssignment = assignmentRepository.findByCode(model.getCode());
+            if(getAssignmentById(model.getId()) == null){
 
-        if (getAssignmentById(model.getId()) != null
-        &&  instanceAssignment               != null)
-        {
+            }
+
+            if(instanceAssignment == null){
+
+            }
+
             // convert model to entity
             Assignment assignment = modelMapper.map(model,Assignment.class);
             assignmentRepository.save(assignment);
@@ -129,8 +159,10 @@ public class AssignmentServiceImpl{
             // add new assignment
             user.addAssignment(assignment);
             return model;
+
+        }catch (Exception error){
+            throw new ExceptionService(error.getMessage());
         }
-        return null;
     }
 
     /**
@@ -139,24 +171,28 @@ public class AssignmentServiceImpl{
      * @return true if assignment is deleted
      */
     public boolean deleteAssignment(String code){
-        Assignment assignmentByCode = assignmentRepository.findByCode(code);
-        if(assignmentByCode == null){
+        try{
+            Assignment assignmentByCode = assignmentRepository.findByCode(code);
+            if(assignmentByCode == null){
+                return false;
+            }
+
+            Assignment existedAssignment = getAssignmentById(assignmentByCode.getId());
+            if(existedAssignment != null){
+                assignmentRepository.deleteById(assignmentByCode.getId());
+
+                // find deleted assignment in user
+                String userCode = modelMapper.map(assignmentByCode,AssignmentDto.class).getUserCode();
+                User user = userRepository.findByUserCode(userCode);
+
+                // remove assignment in user
+                user.removeAssignment(existedAssignment);
+                return true;
+            }
             return false;
+        }catch (Exception error){
+            throw new ExceptionService(error.getMessage());
         }
-
-        Assignment existedAssignment = getAssignmentById(assignmentByCode.getId());
-        if(existedAssignment != null){
-            assignmentRepository.deleteById(assignmentByCode.getId());
-
-            // find deleted assignment in user
-            String userCode = modelMapper.map(assignmentByCode,AssignmentDto.class).getUserCode();
-            User user = userRepository.findByUserCode(userCode);
-
-            // remove assignment in user
-            user.removeAssignment(existedAssignment);
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -165,12 +201,16 @@ public class AssignmentServiceImpl{
      * @return filtered assignment
      */
     public List<AssignmentDto> filterAssignments(String keyword) {
-        // filter by user code
-        List<AssignmentDto> filteredList = getAssignmentsByUserCode(keyword);
+        try{
+            // filter by user code
+            List<AssignmentDto> filteredList = getAssignmentsByUserCode(keyword);
 
-        // filter by title & code
-        assignmentRepository.filterAssignments(keyword).forEach(e ->
-                filteredList.add(modelMapper.map(e,AssignmentDto.class)));
-        return filteredList;
+            // filter by title & code
+            assignmentRepository.filterAssignments(keyword).forEach(e ->
+                    filteredList.add(modelMapper.map(e,AssignmentDto.class)));
+            return filteredList;
+        }catch(Exception error){
+            throw new ExceptionService(error.getMessage());
+        }
     }
 }
