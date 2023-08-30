@@ -1,9 +1,10 @@
-package com.edusystem.configuration;
+package com.edusystem.configuration.security;
 
 import com.edusystem.repositories.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cglib.core.internal.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ import java.util.Map;
  *  JWT Token configuration
  */
 @Component
+//@Qualifier("JWTUtil")
 public class JWTUtil {
     final long ONE_MINUTE_IN_MILLIS = 60000;
     final long EXPIRATION_TIME = 8 * 60 * ONE_MINUTE_IN_MILLIS;

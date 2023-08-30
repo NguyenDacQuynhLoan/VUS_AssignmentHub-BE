@@ -1,7 +1,6 @@
-package com.edusystem.configuration;
+package com.edusystem.configuration.security;
 
 import com.edusystem.repositories.Authen.AuthenticateRepository;
-import com.edusystem.services.UserServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="122d41cc-e7d4-41aa-af54-9a7c149f2b62" name="Changes" comment="update API Response">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/configuration/BeforeGenerateAppComponent.java" afterDir="false" />
+    <list default="true" id="122d41cc-e7d4-41aa-af54-9a7c149f2b62" name="Changes" comment="update">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/configuration/DefaultGenerate.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.6.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.6.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.6.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.6.1/fileHashes/fileHashes.bin" afterDir="false" />
@@ -14,25 +14,32 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/AssignmentHubApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/AssignmentHubApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Configuration/JWTUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Configuration/JWTUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Controllers/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Controllers/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Configuration/JWTAuthFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Configuration/JWTUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Controllers/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Controllers/LoginController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Entities/Role.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Entities/Role.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Entities/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Entities/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Repositories/Authen/AuthenticateRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Repositories/Authen/AuthenticateRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Services/AssignmentServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Services/AssignmentServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Services/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/edusystem/Services/UserServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/AssignmentHubApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/AssignmentHubApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/configuration/_SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/configuration/_SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/controllers/AssignmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/controllers/AssignmentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/controllers/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/configuration/BeforeGenerateAppComponent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/configuration/JWTAuthFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/configuration/security/JWTAuthFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/configuration/JWTUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/configuration/security/JWTUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/configuration/_ApplicationConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/configuration/_ApplicationConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/configuration/_SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/configuration/security/_SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/controllers/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/controllers/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/dto/RoleDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/dto/RoleDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/dto/UserDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/entities/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/entities/Role.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/entities/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/repositories/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/services/AssignmentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/services/AssignmentServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/services/SubjectServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/services/SubjectServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/repositories/Authen/AuthenticateRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/repositories/Authen/AuthenticateRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/services/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/services/UserServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/services/UserServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/edusystem/services/UserServices.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/edusystem/services/_MyUserDetailService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -251,7 +258,15 @@
       <option name="project" value="LOCAL" />
       <updated>1692613421560</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="update">
+      <option name="closed" value="true" />
+      <created>1692959309675</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1692959309678</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -270,14 +285,28 @@
     <MESSAGE value="update subject + user" />
     <MESSAGE value="Note comment on files and fix subject create/update to User" />
     <MESSAGE value="comment on JWT files" />
-    <MESSAGE value="update" />
     <MESSAGE value="update assignment dto" />
     <MESSAGE value="update assignment" />
     <MESSAGE value="add git ignore" />
     <MESSAGE value="update API Response" />
-    <option name="LAST_COMMIT_MESSAGE" value="update API Response" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/edusystem/services/UserServiceImpl.java</url>
+          <line>56</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/edusystem/services/UserServiceImpl.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="jdk.proxy2.$Proxy110" memberName="h" />
@@ -289,7 +318,7 @@
       <configuration name="GradleRunConfiguration">
         <watch expression="modelMapper.config" />
       </configuration>
-      <inline-watch fileUrl="file://$PROJECT_DIR$/src/main/java/com/edusystem/entities/User.java" line="207">
+      <inline-watch fileUrl="file://$PROJECT_DIR$/src/main/java/com/edusystem/entities/User.java" line="217">
         <watch expression="getUsers" />
       </inline-watch>
     </watches-manager>

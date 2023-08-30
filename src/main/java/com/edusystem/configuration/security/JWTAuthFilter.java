@@ -1,4 +1,4 @@
-package com.edusystem.configuration;
+package com.edusystem.configuration.security;
 
 import com.edusystem.repositories.Authen.AuthenticateRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +22,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
  * JWT Authentication configuration
  */
 @Component
+//@Qualifier("JWTAuthFilter")
 @RequiredArgsConstructor
 public class JWTAuthFilter extends OncePerRequestFilter {
 

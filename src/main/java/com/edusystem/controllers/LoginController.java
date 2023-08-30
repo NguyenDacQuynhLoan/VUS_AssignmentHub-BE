@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 
-import com.edusystem.configuration.JWTUtil;
-import com.edusystem.configuration._SecurityConfig;
+import com.edusystem.configuration.security.JWTUtil;
+import com.edusystem.configuration.security._SecurityConfig;
 
 import com.edusystem.dto.LoginDto;
 import com.edusystem.repositories.Authen.AuthenticateRepository;
@@ -29,7 +29,6 @@ public class LoginController extends ExceptionController{
     @PostMapping("/login")
     public ResponseEntity<String> isLogged(@RequestBody LoginDto model)
     {
-        var passwordValue = model.getPassword();
         _authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(model.getEmail(),model.getPassword())
         );

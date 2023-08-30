@@ -42,8 +42,8 @@ public class AuthenticateRepository {
              UserDetails newUserArray = new User(
                  e.getEmail(),
                  e.getPassword(),
-                     Collections.singleton(new SimpleGrantedAuthority("AD"))
-//                 Collections.singleton(new SimpleGrantedAuthority(e.getUserCode().getName()))
+                     Collections.singleton(new SimpleGrantedAuthority("ADMIN"))
+//                 Collections.singleton(new SimpleGrantedAuthority(e.getUserRole().getName()))
              );
              newUserDetail.add(newUserArray);
          });

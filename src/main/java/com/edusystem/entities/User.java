@@ -36,7 +36,8 @@ public class User {
 	private String userName;
 
 //	@Column(name = "user_role")
-//	private Role userRole;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Role userRole;
 
 	@Column(name = "user_major")
 	private Major major;
@@ -83,6 +84,14 @@ public class User {
 
 	public void setUserCode(String userCode) {
 		this.userCode = userCode;
+	}
+
+	public Role getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(Role userRole) {
+		this.userRole = userRole;
 	}
 
 	public String getUserName() {
@@ -163,9 +172,10 @@ public class User {
 	// endregion
 
 	// region constructor
-	public User(Long id, String userCode, String userName, Major major, String gender, Date dateOfBirth, String location, String phone, String email, String password, List<Assignment> assignments, List<Subject> subjects) {
+	public User(Long id, String userCode, Role userRole, String userName, Major major, String gender, Date dateOfBirth, String location, String phone, String email, String password, List<Assignment> assignments, List<Subject> subjects) {
 		this.id = id;
 		this.userCode = userCode;
+		this.userRole = userRole;
 		this.userName = userName;
 		this.major = major;
 		this.gender = gender;

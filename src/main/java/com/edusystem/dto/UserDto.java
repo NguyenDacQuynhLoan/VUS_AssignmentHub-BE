@@ -2,6 +2,8 @@ package com.edusystem.dto;
 
 import java.util.Date;
 import java.util.List;
+
+import com.edusystem.entities.Role;
 import lombok.Data;
 
 import com.edusystem.enums.Major;
@@ -16,6 +18,10 @@ public class UserDto {
     public String userName;
 
     public String gender;
+
+    public String userRoleCode;
+
+    public String userRoleName;
 
     public Date dateOfBirth;
 

@@ -1,6 +1,7 @@
 package com.edusystem.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +20,9 @@ public class Role {
 
     @Column(name = "role_name")
     private String name;
+
+    @OneToMany(mappedBy="userRole", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<User> users = new ArrayList<>();
 
     // region getter & setter
     public Long getId() {
@@ -45,15 +49,34 @@ public class Role {
         this.name = name;
     }
 
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
     // endregion
 
     // region constructor
-    public Role(Long id, String code, String name) {
+    public Role(Long id, String code, String name, List<User> users) {
         this.id = id;
         this.code = code;
         this.name = name;
+        this.users = users;
     }
+
     public Role() {
     }
     // endregion
+
+    public void addUser(User user){
+        this.users.add(user);
+        user.setUserRole(this);
+    }
+
+    public void removeUser(User user){
+        this.users.remove(user);
+        user.setUserRole(null);
+    }
 }
