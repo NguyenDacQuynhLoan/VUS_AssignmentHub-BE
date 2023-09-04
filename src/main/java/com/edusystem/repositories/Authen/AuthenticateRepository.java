@@ -3,10 +3,15 @@ package com.edusystem.repositories.Authen;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import com.edusystem.entities.Role;
 import com.edusystem.repositories.RoleRepository;
 import com.edusystem.repositories.UserRepository;
+import com.edusystem.services.ExceptionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,17 +41,19 @@ public class AuthenticateRepository {
      * @return founded user
      */
     public UserDetails findEmail(String email){
-         List<UserDetails> newUserDetail = new ArrayList<>();
-
-        _userRepository.findAll().forEach(e -> {
-             UserDetails newUserArray = new User(
+         List<UserDetails> newUserDetail = _userRepository.findAll().stream().map(e -> {
+//            if(e.getUserRole() == null){
+//                return null;
+//            }
+//            String roleCode  = e.getUserRole().getCode();
+            return new User(
                  e.getEmail(),
                  e.getPassword(),
-                     Collections.singleton(new SimpleGrantedAuthority("ADMIN"))
-//                 Collections.singleton(new SimpleGrantedAuthority(e.getUserRole().getName()))
+                    Collections.singleton(
+                            new SimpleGrantedAuthority("ADMIN")
+                    )
              );
-             newUserDetail.add(newUserArray);
-         });
+         }).collect(Collectors.toList());
 
         UserDetails userDetails = null;
         if(newUserDetail.size() > 0){

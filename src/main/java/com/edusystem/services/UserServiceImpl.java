@@ -2,6 +2,7 @@ package com.edusystem.services;
 
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.edusystem.configuration.security._SecurityConfig;
 import com.edusystem.dto.ChangePassword;
@@ -44,20 +45,29 @@ public class UserServiceImpl implements UserServices{
 	public List<UserDto> getAllUsers(){
 		try{
 			List<UserDto> userDtoList = new ArrayList<>();
-			userRepository
-					.findAll()
-					.forEach(e ->
-						{
-							UserDto dto = modelMapper.map(e,UserDto.class);
-							dto.setUserRoleName(e.getUserRole().getName());
-							dto.setUserRoleCode(e.getUserRole().getCode());
-							userDtoList.add(dto);
-						}
-					);
+			userDtoList = userRepository
+					.findAll().stream()
+					.map(e -> {
+						var temp = e.getUserRole().getName();
+						UserDto dto = modelMapper.map(e, UserDto.class);
+						dto.setUserRoleName(e.getUserRole().getName());
+						dto.setUserRoleCode(e.getUserRole().getCode());
+						return dto;
+					})
+					.collect(Collectors.toList());
 			return userDtoList;
 		}catch (Exception error){
 			throw new ExceptionService(error.getMessage());
 		}
+	}
+
+	@Override
+	public UserDto getUserByCode(String userCode) {
+		User user = userRepository.findByUserCode(userCode);
+		UserDto userDto = modelMapper.map(user,UserDto.class);
+		userDto.setUserRoleCode(user.getUserRole().getCode());
+		userDto.setUserRoleName(user.getUserRole().getName());
+		return userDto;
 	}
 
 	/**
@@ -89,19 +99,23 @@ public class UserServiceImpl implements UserServices{
 			if(userRepository.findByEmail(user.getEmail()) != null){
 				throw new ExceptionService(user.getEmail() + " is existed");
 			}
+
+			Role userRole = roleRepository.findByCode(user.getUserRoleCode());
+			if(userRole == null){
+				throw new ExceptionService("Role is not exist.");
+			}
+
 			// encode password
 			String encodedPassword = securityConfig
 					.passwordEncoder()
 					.encode(user.getPassword());
 			user.setPassword(encodedPassword);
 
-			// get User Role
-			Role userRole = roleRepository.findByCode(user.getUserRoleCode());
 			// convert to DTO
 			User userConverted = modelMapper.map(user,User.class);
 			userConverted.setUserRole(userRole);
 
-			// add U
+			// add User
 			userRole.addUser(userConverted);
 
 			userRepository.save(userConverted);
@@ -119,14 +133,6 @@ public class UserServiceImpl implements UserServices{
 	@Override
 	public UserDto updateUser(UserDto user){
 		try {
-			if(userRepository.findByUserCode(user.getUserCode()) != null){
-				throw new RuntimeException(user.getUserCode() + " is existed");
-			}
-
-			if(userRepository.findByEmail(user.getEmail()) != null){
-				throw new ExceptionService(user.getEmail() + " is existed");
-			}
-
 			User userByCode = userRepository.findByUserCode(user.getUserCode());
 			if(userByCode == null) {
 				throw new ExceptionService("Can\'t find User " + user.getUserCode());

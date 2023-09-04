@@ -64,5 +64,25 @@ public class _ApplicationConfiguration implements CommandLineRunner {
             new ArrayList<>()
         );
         userRepository.save(adminUser);
+
+        for (int i = 2; i <= 50; i++) {
+            User newUser = new User(
+                    Long.valueOf(i),
+                    "CODE".concat(String.valueOf(i)),
+                    adminRole,
+                    "USER".concat(String.valueOf(i)),
+                    Major.valueOf("Software"),
+                    "Female",
+                    dateFormat.parse("2000-12-12"),
+                    "HCM",
+                    "09000".concat(String.valueOf(i)),
+                    "admin".concat(String.valueOf(i)) +"@gmail",
+                    "$2a$12$DJICPRimzm695WS5g.0em.c7EfWeryWb2BaJs3oGi.bvIvgJLKqVm", // admin123
+                    new ArrayList<>(),
+                    new ArrayList<>()
+            );
+            userRepository.save(newUser);
+        }
+        userRepository.flush();
     }
 }

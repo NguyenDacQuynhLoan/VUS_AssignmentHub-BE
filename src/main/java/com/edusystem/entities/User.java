@@ -35,7 +35,6 @@ public class User {
 	@Column(name = "user_name")
 	private String userName;
 
-//	@Column(name = "user_role")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Role userRole;
 

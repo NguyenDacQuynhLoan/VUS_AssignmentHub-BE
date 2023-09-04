@@ -1,6 +1,7 @@
 package com.edusystem.services;
 
 import com.edusystem.dto.RoleDto;
+import com.edusystem.dto.UserDto;
 import com.edusystem.entities.Role;
 import com.edusystem.repositories.RoleRepository;
 import org.modelmapper.ModelMapper;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  *  Role Services
@@ -28,8 +30,13 @@ public class RoleServiceImpl implements RoleServices{
      */
     public List<RoleDto> getAllRoles() {
         List<RoleDto> roleDtoList = new ArrayList<>();
-        roleRepository.findAll().forEach(e -> roleDtoList.add(modelMapper.map(e,RoleDto.class)));
+        roleDtoList = roleRepository.findAll().stream()
+                .map(e -> modelMapper.map(e, RoleDto.class))
+                .collect(Collectors.toList());
         return roleDtoList;
+//        List<RoleDto> roleDtoList = new ArrayList<>();
+//        roleRepository.findAll().forEach(e -> roleDtoList.add(modelMapper.map(e,RoleDto.class)));
+//        return roleDtoList;
     }
 
     private Role getRoleById(Long id){

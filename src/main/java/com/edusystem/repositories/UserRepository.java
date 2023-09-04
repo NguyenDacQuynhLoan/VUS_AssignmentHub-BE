@@ -1,5 +1,6 @@
 package com.edusystem.repositories;
 
+import com.edusystem.entities.Assignment;
 import com.edusystem.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

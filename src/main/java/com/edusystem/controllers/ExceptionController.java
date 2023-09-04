@@ -1,10 +1,14 @@
 package com.edusystem.controllers;
 
-import com.edusystem.services.ExceptionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.edusystem.services.ExceptionService;
+
+/**
+ * Exception Controller Handler
+ */
 public class ExceptionController {
     @ExceptionHandler(ExceptionService.class)
     public ResponseEntity<String> ExceptionHandler (ExceptionService exceptionService){

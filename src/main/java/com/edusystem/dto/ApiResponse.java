@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ApiResponse<T> {
-    private boolean success;
+    private boolean executionStatus;
 
     private T result;
 

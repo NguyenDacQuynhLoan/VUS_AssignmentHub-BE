@@ -29,7 +29,7 @@ public class SubjectController extends ExceptionController{
      *  Create new subject
      * @param userCode User code
      * @param model Subject DTO model
-     * @return new subject and subject in user
+     * @return New Subject and Subject in user
      */
     @PostMapping("/{userCode}/users")
     public SubjectDto createSubject(@PathVariable("userCode") String userCode, @RequestBody SubjectDto model){
@@ -40,7 +40,7 @@ public class SubjectController extends ExceptionController{
      *  Update subject
      * @param userCode User code
      * @param model Subject DTO model
-     * @return updated subject and subject in user
+     * @return Updated subject and subject in user
      */
     @PutMapping("/{userCode}/users")
     public SubjectDto updateSubject(@PathVariable("userCode") String userCode, @RequestBody SubjectDto model){
@@ -49,8 +49,8 @@ public class SubjectController extends ExceptionController{
 
     /**
      *  Delete subject by Code
-     * @param code subject code
-     * @return true if deleted
+     * @param code Subject code
+     * @return True if deleted
      */
     @DeleteMapping("/{code}")
     public boolean deleteSubject(@PathVariable("code") String code){

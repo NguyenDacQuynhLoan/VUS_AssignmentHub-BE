@@ -13,7 +13,7 @@ public interface UserServices {
      * @return user list
      */
     public List<UserDto> getAllUsers();
-
+    public UserDto getUserByCode(String userCode);
     /**
      *  Create new user
      * @param user User DTO
