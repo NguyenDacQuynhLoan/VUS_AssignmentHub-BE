@@ -48,26 +48,26 @@ public class _ApplicationConfiguration implements CommandLineRunner {
         roleRepository.flush();
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        User adminUser = new User(
-            Long.valueOf(1),
-            "001",
-            adminRole,
-            "Ad Teacher",
-            Major.valueOf("Software"),
-            "Female",
-            dateFormat.parse("2000-12-12"),
-            "HCM",
-            "090262528",
-            "admin@gmail",
-            "$2a$12$DJICPRimzm695WS5g.0em.c7EfWeryWb2BaJs3oGi.bvIvgJLKqVm", // admin123
-            new ArrayList<>(),
-            new ArrayList<>()
-        );
-        userRepository.save(adminUser);
+//        User adminUser = new User(
+//            Long.valueOf(1),
+//            "001",
+//            adminRole,
+//            "Ad Teacher",
+//            Major.valueOf("Software"),
+//            "Female",
+//            dateFormat.parse("2000-12-12"),
+//            "HCM",
+//            "090262528",
+//            "admin@gmail",
+//            "$2a$12$DJICPRimzm695WS5g.0em.c7EfWeryWb2BaJs3oGi.bvIvgJLKqVm", // admin123
+//            new ArrayList<>(),
+//            new ArrayList<>()
+//        );
+//        userRepository.save(adminUser);
 
-        for (int i = 2; i <= 50; i++) {
+        for (int i = 0; i <= 50; i++) {
             User newUser = new User(
-                    Long.valueOf(i),
+                    Long.valueOf(i + 1),
                     "CODE".concat(String.valueOf(i)),
                     adminRole,
                     "USER".concat(String.valueOf(i)),
@@ -76,7 +76,7 @@ public class _ApplicationConfiguration implements CommandLineRunner {
                     dateFormat.parse("2000-12-12"),
                     "HCM",
                     "09000".concat(String.valueOf(i)),
-                    "admin".concat(String.valueOf(i)) +"@gmail",
+                    i == 0 ?"admin@gmail":"admin".concat(String.valueOf(i + 1)) +"@gmail",
                     "$2a$12$DJICPRimzm695WS5g.0em.c7EfWeryWb2BaJs3oGi.bvIvgJLKqVm", // admin123
                     new ArrayList<>(),
                     new ArrayList<>()

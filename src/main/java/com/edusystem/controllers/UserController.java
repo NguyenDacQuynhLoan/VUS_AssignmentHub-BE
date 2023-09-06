@@ -2,6 +2,8 @@ package com.edusystem.controllers;
 
 import com.edusystem.dto.ApiResponse;
 import com.edusystem.dto.ChangePassword;
+import com.edusystem.entities.User;
+import com.edusystem.repositories.UserRepository;
 import com.edusystem.services.ExceptionService;
 import com.edusystem.services.UserServiceImpl;
 import com.edusystem.dto.UserDto;
@@ -28,7 +30,8 @@ public class UserController extends ExceptionController{
      */
     @GetMapping("/{pageIndex}/{pageSize}")
     public ResponseEntity<ApiResponse<List<UserDto>>> getAllUsers(
-            @PathVariable("pageIndex") Integer index, @PathVariable("pageSize") Integer size
+            @PathVariable("pageIndex") Integer index,
+            @PathVariable("pageSize" ) Integer size
     ) {
         ApiResponse<List<UserDto>> ApiResult = new ApiResponse<>();
         try{
@@ -47,6 +50,11 @@ public class UserController extends ExceptionController{
         }
     }
 
+    /**
+     * Get User by code
+     * @param code User Code
+     * @return Detected User DTO
+     */
     @GetMapping("/{userCode}")
     public ResponseEntity<ApiResponse<UserDto>> getUserByUserCode(
             @PathVariable("userCode") String code

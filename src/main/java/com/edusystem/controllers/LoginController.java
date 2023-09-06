@@ -1,5 +1,7 @@
 package com.edusystem.controllers;
 
+import com.edusystem.dto.ApiResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.http.ResponseEntity;
@@ -27,17 +29,22 @@ public class LoginController extends ExceptionController{
     private final JWTUtil _jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<String> isLogged(@RequestBody LoginDto model)
+    public ResponseEntity<ApiResponse<String>> isLogged(@RequestBody LoginDto model)
     {
-        _authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(model.getEmail(),model.getPassword())
-        );
-
-        final UserDetails userService = _authenticateRepository.findEmail(model.getEmail());
-        if(userService != null){
+        ApiResponse<String> apiResponse = new ApiResponse<>();
+        try {
+            _authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(model.getEmail(),model.getPassword())
+            );
+            final UserDetails userService = _authenticateRepository.findEmail(model.getEmail());
             String token = _jwtUtil.generateToken(userService);
-          return ResponseEntity.ok(token);
+            apiResponse.setExecutionStatus(true);
+            apiResponse.setResult(token);
+            return ResponseEntity.ok(apiResponse);
+        }catch (Exception error){
+            apiResponse.setExecutionStatus(false);
+            apiResponse.setMessage(error.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
         }
-        return ResponseEntity.status(404).body("Can not found");
     }
 }

@@ -1,6 +1,7 @@
 package com.edusystem.services;
 
 import com.edusystem.dto.UserDto;
+import com.edusystem.entities.User;
 
 import java.util.List;
 
@@ -13,7 +14,9 @@ public interface UserServices {
      * @return user list
      */
     public List<UserDto> getAllUsers();
+
     public UserDto getUserByCode(String userCode);
+
     /**
      *  Create new user
      * @param user User DTO

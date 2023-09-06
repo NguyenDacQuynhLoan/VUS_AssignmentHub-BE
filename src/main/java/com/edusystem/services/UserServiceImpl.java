@@ -63,11 +63,18 @@ public class UserServiceImpl implements UserServices{
 
 	@Override
 	public UserDto getUserByCode(String userCode) {
-		User user = userRepository.findByUserCode(userCode);
-		UserDto userDto = modelMapper.map(user,UserDto.class);
-		userDto.setUserRoleCode(user.getUserRole().getCode());
-		userDto.setUserRoleName(user.getUserRole().getName());
-		return userDto;
+		try {
+			User user = userRepository.findByUserCode(userCode);
+			UserDto userDto = modelMapper.map(user,UserDto.class);
+			Role role = roleRepository.findByCode(user.getUserRole().getCode());
+
+			userDto.setUserRoleCode(role.getCode());
+			userDto.setUserRoleName(role.getName());
+
+			return userDto;
+		}catch(Exception error){
+			throw new ExceptionService(error.getMessage());
+		}
 	}
 
 	/**
@@ -134,17 +141,21 @@ public class UserServiceImpl implements UserServices{
 	public UserDto updateUser(UserDto user){
 		try {
 			User userByCode = userRepository.findByUserCode(user.getUserCode());
+
 			if(userByCode == null) {
 				throw new ExceptionService("Can\'t find User " + user.getUserCode());
 			}
 
 			User userMapped = modelMapper.map(user, User.class);
-			Role role = roleRepository.findByCode(user.getUserRoleCode());
-			role.removeUser(userByCode);
-
-			userMapped.setUserRole(role);
 			userMapped.setPassword(userByCode.getPassword());
 			userMapped.setId(userByCode.getId());
+
+			Role role = roleRepository.findByCode(user.getUserRoleCode());
+			userMapped.setUserRole(role);
+			role.removeUser(userByCode);
+			role.addUser(userMapped);
+
+			roleRepository.save(role);
 			userRepository.save(userMapped);
 
 			return user;

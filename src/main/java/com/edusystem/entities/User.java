@@ -35,9 +35,6 @@ public class User {
 	@Column(name = "user_name")
 	private String userName;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Role userRole;
-
 	@Column(name = "user_major")
 	private Major major;
 
@@ -56,6 +53,9 @@ public class User {
 	private String email;
 
 	private String password;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Role userRole;
 
 	@OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Assignment> assignments = new ArrayList<>();
