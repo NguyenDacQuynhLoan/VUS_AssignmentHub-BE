@@ -6,7 +6,7 @@ import lombok.Data;
 public class ChangePassword {
     public String userCode;
 
-    public String oldPassword;
+    public String currentPassword;
 
     public String newPassword;
 }

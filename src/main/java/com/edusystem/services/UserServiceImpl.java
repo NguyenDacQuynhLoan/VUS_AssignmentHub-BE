@@ -171,16 +171,19 @@ public class UserServiceImpl implements UserServices{
 	 */
 	public boolean updateUserPassword(ChangePassword model) {
 		try{
-			User userbyCode = userRepository.findByUserCode(model.getUserCode());
-			if(model.getOldPassword().equals(userbyCode.getPassword())){
-				String encodedPassword = securityConfig
-						.passwordEncoder()
-						.encode(model.getNewPassword());
-				userbyCode.setPassword(encodedPassword);
-				userRepository.save(userbyCode);
-				return true;
+			User userByCode = userRepository.findByUserCode(model.getUserCode());
+			boolean isMatched = securityConfig.passwordEncoder()
+					.matches(model.getCurrentPassword(),userByCode.getPassword());
+			if(!isMatched){
+				throw new ExceptionService("Current Password is incorrect");
 			}
-			return false;
+
+			String encodedPassword = securityConfig
+					.passwordEncoder()
+					.encode(model.getNewPassword());
+			userByCode.setPassword(encodedPassword);
+			userRepository.save(userByCode);
+			return true;
 		}catch (Exception error) {
 			throw new ExceptionService(error.getMessage());
 		}

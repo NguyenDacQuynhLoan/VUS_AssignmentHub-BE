@@ -84,7 +84,7 @@ public class UserController extends ExceptionController{
             UserDto updatedUserDTO = userServiceImpl.createUser(model);
             ApiResult.setExecutionStatus(true);
             ApiResult.setResult(updatedUserDTO);
-            ApiResult.setMessage("User is created");
+            ApiResult.setMessage("User "+ updatedUserDTO.getUserCode() + " is created");
             return ResponseEntity.ok(ApiResult);
         }catch(ExceptionService error){
             ApiResult.setExecutionStatus(false);
@@ -105,6 +105,7 @@ public class UserController extends ExceptionController{
             UserDto updatedUserDTO = userServiceImpl.updateUser(model);
             ApiUserDto.setExecutionStatus(true);
             ApiUserDto.setResult(updatedUserDTO);
+            ApiUserDto.setMessage("User " + updatedUserDTO.getUserCode()+ " is updated");
             return ResponseEntity.ok(ApiUserDto);
         }catch(Exception error){
             ApiUserDto.setExecutionStatus(false);
@@ -125,6 +126,7 @@ public class UserController extends ExceptionController{
             Boolean updatedResult = userServiceImpl.updateUserPassword(model);
             ApiResult.setExecutionStatus(true);
             ApiResult.setResult(updatedResult);
+            ApiResult.setMessage("Update Password successful");
             return ResponseEntity.ok(ApiResult);
         }catch (Exception error){
             ApiResult.setExecutionStatus(false);
