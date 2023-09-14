@@ -5,6 +5,9 @@ package com.edusystem.enums;
  */
 public enum Grade {
     // 8.5 -> 10.0
+    None,
+
+    // 8.5 -> 10.0
     Excellent,
 
     // 7.0 -> 8.5

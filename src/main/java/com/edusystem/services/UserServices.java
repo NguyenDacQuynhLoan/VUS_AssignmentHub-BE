@@ -13,7 +13,7 @@ public interface UserServices {
      *  Get all users
      * @return user list
      */
-    public List<UserDto> getAllUsers();
+    public List<UserDto> getAllUsers(Integer pageIndex, Integer pageSize);
 
     public UserDto getUserByCode(String userCode);
 

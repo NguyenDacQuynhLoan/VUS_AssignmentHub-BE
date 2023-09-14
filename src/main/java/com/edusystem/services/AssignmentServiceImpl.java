@@ -2,17 +2,17 @@ package com.edusystem.services;
 
 import com.edusystem.dto.UserDto;
 import com.edusystem.entities.Assignment;
+import com.edusystem.entities.Subject;
 import com.edusystem.entities.User;
 import com.edusystem.repositories.AssignmentRepository;
 import com.edusystem.dto.AssignmentDto;
+import com.edusystem.repositories.SubjectRepository;
 import com.edusystem.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -27,6 +27,9 @@ public class AssignmentServiceImpl{
     private UserRepository userRepository;
 
     @Autowired
+    private SubjectRepository subjectRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     /**
@@ -35,13 +38,38 @@ public class AssignmentServiceImpl{
      */
     public List<AssignmentDto> getAllAssignments() {
         try {
-            return assignmentRepository.findAll()
-                    .stream()
-                    .map(e ->{
-                        AssignmentDto dto = modelMapper.map(e,AssignmentDto.class);
-                        dto.setUserCode(e.getUser().getUserCode());
-                        return  dto;
-                    }).collect(Collectors.toList());
+            List<AssignmentDto> assignmentDtoList = assignmentRepository
+                .findAll().stream()
+                .map(e -> {
+                    Optional<User> author = userRepository.findAll().stream().filter(p ->
+                            p.getAssignments().stream().anyMatch(j ->
+                                    j.getCode().equals(e.getCode()))
+                    ).findFirst();
+
+                    if (author.isPresent()) {
+                        AssignmentDto dto = modelMapper.map(e, AssignmentDto.class);
+                        dto.setUserCode(author.get().getUserCode());
+                        dto.setUserName(author.get().getUserName());
+                        dto.setMajor(author.get().getMajor());
+
+                        Subject detectSubject = subjectRepository.findByMajor(author.get().getMajor());
+                        if (detectSubject != null) {
+                            dto.setSubjectName(detectSubject.getName());
+                        }
+                        return dto;
+                    } else {
+                        return null;
+                    }
+                })
+                .sorted(new Comparator<AssignmentDto>() {
+                    @Override
+                    public int compare(AssignmentDto o1, AssignmentDto o2) {
+                        return o2.getUpdatedDate().compareTo(o1.getUpdatedDate());
+                    }
+                }).collect(Collectors.toList());
+
+            int end = Math.min(15, assignmentDtoList.size());
+            return assignmentDtoList.subList(0,end);
         }catch (Exception error) {
             throw new ExceptionService(error.getMessage());
         }

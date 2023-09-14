@@ -42,20 +42,29 @@ public class UserServiceImpl implements UserServices{
 	 * @return user list
 	 */
 	@Override
-	public List<UserDto> getAllUsers(){
+	public List<UserDto> getAllUsers(Integer pageIndex, Integer pageSize){
 		try{
 			List<UserDto> userDtoList = new ArrayList<>();
 			userDtoList = userRepository
-					.findAll().stream()
-					.map(e -> {
-						var temp = e.getUserRole().getName();
-						UserDto dto = modelMapper.map(e, UserDto.class);
-						dto.setUserRoleName(e.getUserRole().getName());
-						dto.setUserRoleCode(e.getUserRole().getCode());
-						return dto;
-					})
-					.collect(Collectors.toList());
-			return userDtoList;
+				.findAll().stream()
+				.map(e -> {
+					var temp = e.getUserRole().getName();
+					UserDto dto = modelMapper.map(e, UserDto.class);
+					dto.setUserRoleName(e.getUserRole().getName());
+					dto.setUserRoleCode(e.getUserRole().getCode());
+					return dto;
+				}).sorted(new Comparator<UserDto>() {
+					@Override
+					public int compare(UserDto o1, UserDto o2) {
+						return o1.getUserCode().compareTo(o2.getUserCode());
+					}
+				})
+				.collect(Collectors.toList());
+
+
+			int start = pageIndex * pageSize;
+			int end = Math.min(start + pageSize, userDtoList.size());
+			return userDtoList.subList(start,end);
 		}catch (Exception error){
 			throw new ExceptionService(error.getMessage());
 		}

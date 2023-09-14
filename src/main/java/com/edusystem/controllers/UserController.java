@@ -35,11 +35,7 @@ public class UserController extends ExceptionController{
     ) {
         ApiResponse<List<UserDto>> ApiResult = new ApiResponse<>();
         try{
-            List<UserDto> userDtoList = userServiceImpl.getAllUsers();
-            int start = index * size;
-            int end = Math.min(start + size, userDtoList.size());
-            userDtoList = userDtoList.subList(start,end);
-
+            List<UserDto> userDtoList = userServiceImpl.getAllUsers(index,size);
             ApiResult.setExecutionStatus(true);
             ApiResult.setResult(userDtoList);
             return ResponseEntity.ok(ApiResult);
