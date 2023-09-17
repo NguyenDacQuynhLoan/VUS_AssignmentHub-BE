@@ -46,6 +46,25 @@ public class UserController extends ExceptionController{
         }
     }
 
+    @GetMapping("/{pageIndex}/{pageSize}/{keyword}")
+    public ResponseEntity<ApiResponse<List<UserDto>>> SearchAllUsers(
+            @PathVariable("pageIndex") Integer index,
+            @PathVariable("pageSize" ) Integer size,
+            @PathVariable("keyword") String keyword
+    ){
+        ApiResponse<List<UserDto>> ApiResult = new ApiResponse<>();
+        try{
+            List<UserDto> userDtoList = userServiceImpl.searchUsers(index,size,keyword);
+            ApiResult.setExecutionStatus(true);
+            ApiResult.setResult(userDtoList);
+            return ResponseEntity.ok(ApiResult);
+        }catch (Exception error){
+            ApiResult.setExecutionStatus(false);
+            ApiResult.setMessage(error.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResult);
+        }
+    }
+
     /**
      * Get User by code
      * @param code User Code
@@ -115,18 +134,36 @@ public class UserController extends ExceptionController{
      * @param model Change Password Model
      * @return True if updated password success
      */
-    @PutMapping("/updatePassword")
-    public ResponseEntity<ApiResponse<Boolean>> updateUserPassword(@RequestBody ChangePassword model){
-        ApiResponse<Boolean> ApiResult = new ApiResponse<>();
-        try{
-            Boolean updatedResult = userServiceImpl.updateUserPassword(model);
+//    @PutMapping("/updatePassword")
+//    public ResponseEntity<ApiResponse<Boolean>> updateUserPassword(@RequestBody ChangePassword model){
+//        ApiResponse<Boolean> ApiResult = new ApiResponse<>();
+//        try{
+//            Boolean updatedResult = userServiceImpl.updateUserPassword(model);
+//            ApiResult.setExecutionStatus(true);
+//            ApiResult.setResult(updatedResult);
+//            ApiResult.setMessage("Update Password successful");
+//            return ResponseEntity.ok(ApiResult);
+//        }catch (Exception error){
+//            ApiResult.setExecutionStatus(false);
+//            ApiResult.setMessage(error.getMessage());
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResult);
+//        }
+//    }
+
+
+    @PutMapping({"/updatePassword"})
+    public ResponseEntity<ApiResponse<Boolean>> updateUserPassword(@RequestBody ChangePassword model) {
+        ApiResponse<Boolean> ApiResult = new ApiResponse();
+
+        try {
+            Boolean updatedResult = this.userServiceImpl.updateUserPassword(model);
             ApiResult.setExecutionStatus(true);
             ApiResult.setResult(updatedResult);
             ApiResult.setMessage("Update Password successful");
             return ResponseEntity.ok(ApiResult);
-        }catch (Exception error){
+        } catch (Exception var4) {
             ApiResult.setExecutionStatus(false);
-            ApiResult.setMessage(error.getMessage());
+            ApiResult.setMessage(var4.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResult);
         }
     }

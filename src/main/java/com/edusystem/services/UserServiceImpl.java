@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.edusystem.configuration.security._SecurityConfig;
 import com.edusystem.dto.ChangePassword;
+import com.edusystem.dto.UserAssignmentFilter;
 import com.edusystem.entities.Role;
 import com.edusystem.entities.User;
 import com.edusystem.repositories.RoleRepository;
@@ -65,6 +66,32 @@ public class UserServiceImpl implements UserServices{
 			int start = pageIndex * pageSize;
 			int end = Math.min(start + pageSize, userDtoList.size());
 			return userDtoList.subList(start,end);
+		}catch (Exception error){
+			throw new ExceptionService(error.getMessage());
+		}
+	}
+	@Override
+	public List<UserDto> searchUsers(Integer index, Integer size, String keyword){
+		try{
+			//test filter
+			UserAssignmentFilter filterValue = new UserAssignmentFilter();
+			filterValue.setUserCode(keyword);
+			List<User> filterUser = userRepository.filterUser(filterValue);
+
+			List<User> userList =  userRepository.searchUser(keyword);
+			List<UserDto> userDtoList = new ArrayList<>();
+//			userDtoList =  userList
+			userDtoList =  filterUser
+					.stream()
+					.map(e -> {
+						var temp = e.getUserRole().getName();
+						UserDto dto = modelMapper.map(e, UserDto.class);
+						dto.setUserRoleName(e.getUserRole().getName());
+						dto.setUserRoleCode(e.getUserRole().getCode());
+						return dto;
+					})
+					.collect(Collectors.toList());
+			return userDtoList;
 		}catch (Exception error){
 			throw new ExceptionService(error.getMessage());
 		}
@@ -179,24 +206,25 @@ public class UserServiceImpl implements UserServices{
 	 * @return true if password is updated
 	 */
 	public boolean updateUserPassword(ChangePassword model) {
-		try{
-			User userByCode = userRepository.findByUserCode(model.getUserCode());
-			boolean isMatched = securityConfig.passwordEncoder()
-					.matches(model.getCurrentPassword(),userByCode.getPassword());
-			if(!isMatched){
-				throw new ExceptionService("Current Password is incorrect");
-			}
-
-			String encodedPassword = securityConfig
+		try {
+			User userByCode = this.userRepository.findByUserCode(model.getUserCode());
+			boolean isMatched = this.securityConfig
 					.passwordEncoder()
-					.encode(model.getNewPassword());
-			userByCode.setPassword(encodedPassword);
-			userRepository.save(userByCode);
-			return true;
-		}catch (Exception error) {
-			throw new ExceptionService(error.getMessage());
+					.matches(model.getCurrentPassword(), userByCode.getPassword());
+
+			if (!isMatched) {
+				throw new ExceptionService("Current Password is incorrect");
+			} else {
+				String encodedPassword = this.securityConfig.passwordEncoder().encode(model.getNewPassword());
+				userByCode.setPassword(encodedPassword);
+				this.userRepository.save(userByCode);
+				return true;
+			}
+		} catch (Exception var5) {
+			throw new ExceptionService(var5.getMessage());
 		}
 	}
+
 
 	/**
 	 *  Delete user

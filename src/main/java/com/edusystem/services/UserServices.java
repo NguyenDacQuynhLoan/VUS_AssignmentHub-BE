@@ -14,7 +14,7 @@ public interface UserServices {
      * @return user list
      */
     public List<UserDto> getAllUsers(Integer pageIndex, Integer pageSize);
-
+    public List<UserDto> searchUsers(Integer index, Integer size, String keyword);
     public UserDto getUserByCode(String userCode);
 
     /**
