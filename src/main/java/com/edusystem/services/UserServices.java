@@ -1,5 +1,6 @@
 package com.edusystem.services;
 
+import com.edusystem.dto.UserAssignmentFilter;
 import com.edusystem.dto.UserDto;
 import com.edusystem.entities.User;
 
@@ -15,6 +16,7 @@ public interface UserServices {
      */
     public List<UserDto> getAllUsers(Integer pageIndex, Integer pageSize);
     public List<UserDto> searchUsers(Integer index, Integer size, String keyword);
+    public List<UserDto> filterUsers(Integer index, Integer size, UserAssignmentFilter filterValue);
     public UserDto getUserByCode(String userCode);
 
     /**

@@ -10,6 +10,9 @@ import com.edusystem.repositories.SubjectRepository;
 import com.edusystem.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -38,8 +41,9 @@ public class AssignmentServiceImpl{
      */
     public List<AssignmentDto> getAllAssignments() {
         try {
+            Pageable paging = PageRequest.of(0,10, Sort.by("code"));
             List<AssignmentDto> assignmentDtoList = assignmentRepository
-                .findAll().stream()
+                .findAll(paging).stream()
                 .map(e -> {
                     Optional<User> author = userRepository.findAll().stream().filter(p ->
                             p.getAssignments().stream().anyMatch(j ->
@@ -59,12 +63,6 @@ public class AssignmentServiceImpl{
                         return dto;
                     } else {
                         return null;
-                    }
-                })
-                .sorted(new Comparator<AssignmentDto>() {
-                    @Override
-                    public int compare(AssignmentDto o1, AssignmentDto o2) {
-                        return o2.getUpdatedDate().compareTo(o1.getUpdatedDate());
                     }
                 }).collect(Collectors.toList());
 

@@ -9,20 +9,24 @@ import java.util.Date;
 @Data
 public class UserAssignmentFilter {
     public String userCode;
-//    public String userName;
-//
-//    public String gender;
-//
-//    public String subject;
-//
-//    public String assignmentTitle;
-//
-//    public Boolean isChecked;
-//
-//    public Grade grade;
-//    public Major major;
-//
-//    public Date startDate;
-//
-//    public Date endDate;
+
+    public String userName;
+
+    public String gender;
+
+    public String subject;
+
+    public String assignmentTitle;
+
+    public String assignmentCode;
+
+    public Boolean isChecked;
+
+    public Grade grade;
+
+    public Major major;
+
+    public Date startDate;
+
+    public Date endDate;
 }

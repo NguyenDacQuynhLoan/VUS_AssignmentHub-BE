@@ -14,6 +14,9 @@ import com.edusystem.repositories.UserRepository;
 import com.edusystem.dto.UserDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,17 +76,45 @@ public class UserServiceImpl implements UserServices{
 	@Override
 	public List<UserDto> searchUsers(Integer index, Integer size, String keyword){
 		try{
-			//test filter
-			UserAssignmentFilter filterValue = new UserAssignmentFilter();
-			filterValue.setUserCode(keyword);
-			List<User> filterUser = userRepository.filterUser(filterValue);
+			Pageable paging = PageRequest.of(index,size, Sort.by("userCode"));
+			List<User> userList =  userRepository.searchUser(keyword,paging);
 
-			List<User> userList =  userRepository.searchUser(keyword);
-			List<UserDto> userDtoList = new ArrayList<>();
-//			userDtoList =  userList
-			userDtoList =  filterUser
+			return  userList
 					.stream()
 					.map(e -> {
+						var temp = e.getUserRole().getName();
+						UserDto dto = modelMapper.map(e, UserDto.class);
+						dto.setUserRoleName(e.getUserRole().getName());
+						dto.setUserRoleCode(e.getUserRole().getCode());
+						return dto;
+					})
+					.collect(Collectors.toList());
+		}catch (Exception error){
+			throw new ExceptionService(error.getMessage());
+		}
+	}
+
+	@Override
+	public List<UserDto> filterUsers(Integer index, Integer size, UserAssignmentFilter filterValue) {
+		try{
+			// check date
+			if(filterValue.getStartDate() != null){
+				return null;
+			}
+
+			if(filterValue.getEndDate() != null){
+
+			}
+
+			Pageable paging = PageRequest.of(index,size, Sort.by("userCode"));
+			List<User> userList = userRepository.filterUser(filterValue,paging);
+
+			List<UserDto> userDtoList = new ArrayList<>();
+			userDtoList =  userList
+					.stream()
+					.map(e -> {
+
+
 						var temp = e.getUserRole().getName();
 						UserDto dto = modelMapper.map(e, UserDto.class);
 						dto.setUserRoleName(e.getUserRole().getName());

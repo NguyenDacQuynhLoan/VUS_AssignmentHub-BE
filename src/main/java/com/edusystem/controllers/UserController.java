@@ -2,6 +2,7 @@ package com.edusystem.controllers;
 
 import com.edusystem.dto.ApiResponse;
 import com.edusystem.dto.ChangePassword;
+import com.edusystem.dto.UserAssignmentFilter;
 import com.edusystem.entities.User;
 import com.edusystem.repositories.UserRepository;
 import com.edusystem.services.ExceptionService;
@@ -30,9 +31,9 @@ public class UserController extends ExceptionController{
      */
     @GetMapping("/{pageIndex}/{pageSize}")
     public ResponseEntity<ApiResponse<List<UserDto>>> getAllUsers(
-            @PathVariable("pageIndex") Integer index,
-            @PathVariable("pageSize" ) Integer size
-    ) {
+        @PathVariable("pageIndex") Integer index,
+        @PathVariable("pageSize" ) Integer size
+    ){
         ApiResponse<List<UserDto>> ApiResult = new ApiResponse<>();
         try{
             List<UserDto> userDtoList = userServiceImpl.getAllUsers(index,size);
@@ -46,15 +47,34 @@ public class UserController extends ExceptionController{
         }
     }
 
-    @GetMapping("/{pageIndex}/{pageSize}/{keyword}")
+    @GetMapping("/{pageIndex}/{pageSize}/search/{keyword}")
     public ResponseEntity<ApiResponse<List<UserDto>>> SearchAllUsers(
-            @PathVariable("pageIndex") Integer index,
-            @PathVariable("pageSize" ) Integer size,
-            @PathVariable("keyword") String keyword
+        @PathVariable("pageIndex") Integer index,
+        @PathVariable("pageSize" ) Integer size,
+        @PathVariable("keyword") String keyword
     ){
         ApiResponse<List<UserDto>> ApiResult = new ApiResponse<>();
         try{
             List<UserDto> userDtoList = userServiceImpl.searchUsers(index,size,keyword);
+            ApiResult.setExecutionStatus(true);
+            ApiResult.setResult(userDtoList);
+            return ResponseEntity.ok(ApiResult);
+        }catch (Exception error){
+            ApiResult.setExecutionStatus(false);
+            ApiResult.setMessage(error.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResult);
+        }
+    }
+
+    @PostMapping("/{pageIndex}/{pageSize}/filter")
+    public ResponseEntity<ApiResponse<List<UserDto>>> filterAllUsers(
+            @PathVariable("pageIndex") Integer index,
+            @PathVariable("pageSize" ) Integer size,
+            @RequestBody UserAssignmentFilter model)
+    {
+        ApiResponse<List<UserDto>> ApiResult = new ApiResponse<>();
+        try{
+            List<UserDto> userDtoList = userServiceImpl.filterUsers(index,size,model);
             ApiResult.setExecutionStatus(true);
             ApiResult.setResult(userDtoList);
             return ResponseEntity.ok(ApiResult);
