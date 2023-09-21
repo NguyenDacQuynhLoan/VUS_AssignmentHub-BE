@@ -73,6 +73,14 @@ public class UserServiceImpl implements UserServices{
 			throw new ExceptionService(error.getMessage());
 		}
 	}
+
+	/**
+	 *  Search all users
+	 * @param index Page Index
+	 * @param size Page Size
+	 * @param keyword Search keyword
+	 * @return List searched users
+	 */
 	@Override
 	public List<UserDto> searchUsers(Integer index, Integer size, String keyword){
 		try{
@@ -94,6 +102,13 @@ public class UserServiceImpl implements UserServices{
 		}
 	}
 
+	/**
+	 *  Filter all users
+	 * @param index Page Index
+	 * @param size Page Size
+	 * @param filterValue User Assignment model
+	 * @return List filtered users
+	 */
 	@Override
 	public List<UserDto> filterUsers(Integer index, Integer size, UserAssignmentFilter filterValue) {
 		try{
@@ -113,8 +128,6 @@ public class UserServiceImpl implements UserServices{
 			userDtoList =  userList
 					.stream()
 					.map(e -> {
-
-
 						var temp = e.getUserRole().getName();
 						UserDto dto = modelMapper.map(e, UserDto.class);
 						dto.setUserRoleName(e.getUserRole().getName());
@@ -128,6 +141,11 @@ public class UserServiceImpl implements UserServices{
 		}
 	}
 
+	/**
+	 * User by Code
+	 * @param userCode User Code
+	 * @return User DTO model
+	 */
 	@Override
 	public UserDto getUserByCode(String userCode) {
 		try {
@@ -142,6 +160,15 @@ public class UserServiceImpl implements UserServices{
 		}catch(Exception error){
 			throw new ExceptionService(error.getMessage());
 		}
+	}
+
+	/**
+	 * Get Total Number of Users
+	 * @return Total number
+	 */
+	@Override
+	public Long totalUsers() {
+		return userRepository.count();
 	}
 
 	/**
@@ -255,7 +282,6 @@ public class UserServiceImpl implements UserServices{
 			throw new ExceptionService(var5.getMessage());
 		}
 	}
-
 
 	/**
 	 *  Delete user

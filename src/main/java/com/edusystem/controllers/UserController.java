@@ -47,6 +47,22 @@ public class UserController extends ExceptionController{
         }
     }
 
+    /**
+     * Get Total Number of Users
+     * @return Total number
+     */
+    @GetMapping("/total")
+    public Long countUser (){
+        return userServiceImpl.totalUsers();
+    }
+
+    /**
+     *  Search all users
+     * @param index Page Index
+     * @param size Page Size
+     * @param keyword Search keyword
+     * @return Searched all users
+     */
     @GetMapping("/{pageIndex}/{pageSize}/search/{keyword}")
     public ResponseEntity<ApiResponse<List<UserDto>>> SearchAllUsers(
         @PathVariable("pageIndex") Integer index,
@@ -55,7 +71,7 @@ public class UserController extends ExceptionController{
     ){
         ApiResponse<List<UserDto>> ApiResult = new ApiResponse<>();
         try{
-            List<UserDto> userDtoList = userServiceImpl.searchUsers(index,size,keyword);
+            List<UserDto> userDtoList = userServiceImpl.searchUsers(index,size,keyword.toLowerCase());
             ApiResult.setExecutionStatus(true);
             ApiResult.setResult(userDtoList);
             return ResponseEntity.ok(ApiResult);
@@ -66,12 +82,19 @@ public class UserController extends ExceptionController{
         }
     }
 
+    /**
+     *  Filter all users
+     * @param index Page Index
+     * @param size Page Size
+     * @param model User Assignment Filter DTO model
+     * @return List Filtered Users
+     */
     @PostMapping("/{pageIndex}/{pageSize}/filter")
     public ResponseEntity<ApiResponse<List<UserDto>>> filterAllUsers(
             @PathVariable("pageIndex") Integer index,
             @PathVariable("pageSize" ) Integer size,
-            @RequestBody UserAssignmentFilter model)
-    {
+            @RequestBody UserAssignmentFilter model
+    ){
         ApiResponse<List<UserDto>> ApiResult = new ApiResponse<>();
         try{
             List<UserDto> userDtoList = userServiceImpl.filterUsers(index,size,model);
@@ -154,27 +177,9 @@ public class UserController extends ExceptionController{
      * @param model Change Password Model
      * @return True if updated password success
      */
-//    @PutMapping("/updatePassword")
-//    public ResponseEntity<ApiResponse<Boolean>> updateUserPassword(@RequestBody ChangePassword model){
-//        ApiResponse<Boolean> ApiResult = new ApiResponse<>();
-//        try{
-//            Boolean updatedResult = userServiceImpl.updateUserPassword(model);
-//            ApiResult.setExecutionStatus(true);
-//            ApiResult.setResult(updatedResult);
-//            ApiResult.setMessage("Update Password successful");
-//            return ResponseEntity.ok(ApiResult);
-//        }catch (Exception error){
-//            ApiResult.setExecutionStatus(false);
-//            ApiResult.setMessage(error.getMessage());
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResult);
-//        }
-//    }
-
-
     @PutMapping({"/updatePassword"})
     public ResponseEntity<ApiResponse<Boolean>> updateUserPassword(@RequestBody ChangePassword model) {
-        ApiResponse<Boolean> ApiResult = new ApiResponse();
-
+        ApiResponse<Boolean> ApiResult = new ApiResponse<>();
         try {
             Boolean updatedResult = this.userServiceImpl.updateUserPassword(model);
             ApiResult.setExecutionStatus(true);

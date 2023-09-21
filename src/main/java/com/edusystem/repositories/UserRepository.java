@@ -24,16 +24,16 @@ public interface UserRepository extends JpaRepository<User,Long>, PagingAndSorti
 
     @Query("SELECT u, a.title FROM tbl_user u " +
             "LEFT JOIN u.assignments a " +
-            "WHERE u.userCode LIKE %:keyword% " +
+            "WHERE LOWER(u.userCode) LIKE %:keyword% " +
             "OR FUNCTION('DATE_FORMAT', u.dateOfBirth, '%Y-%m-%d') LIKE %:keyword% " +
-            "OR u.userName LIKE %:keyword% " +
-            "OR u.userRole.code LIKE %:keyword% " +
-            "OR u.location LIKE %:keyword% " +
-            "OR u.phone LIKE %:keyword% " +
+            "OR LOWER(u.userName) LIKE %:keyword% " +
+            "OR LOWER(u.userRole.code) LIKE %:keyword% " +
+            "OR LOWER(u.location) LIKE %:keyword% " +
+            "OR LOWER(u.phone) LIKE %:keyword% " +
             "OR u.major LIKE %:keyword% " +
-            "OR u.email LIKE %:keyword% " +
-            "OR a.title LIKE %:keyword% " +
-            "OR a.code LIKE %:keyword%"
+            "OR LOWER(u.email) LIKE %:keyword% " +
+            "OR LOWER(a.title) LIKE %:keyword% " +
+            "OR LOWER(a.code) LIKE %:keyword%"
     )
     public List<User> searchUser(@Param("keyword") String keyword, Pageable pageable);
 
