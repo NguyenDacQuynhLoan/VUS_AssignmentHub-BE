@@ -1,19 +1,25 @@
 package com.edusystem.services;
 
+import java.util.List;
+
 import com.edusystem.dto.UserAssignmentFilter;
 import com.edusystem.dto.UserDto;
-
-import java.util.List;
 
 /**
  * User Services Interfaces
  */
 public interface UserServices {
     /**
+     *  Get all users with paging
+     * @return user list
+     */
+    public List<UserDto> getAllUsersPaging(Integer pageIndex, Integer pageSize);
+
+    /**
      *  Get all users
      * @return user list
      */
-    public List<UserDto> getAllUsers(Integer pageIndex, Integer pageSize);
+    public List<UserDto> getAllUsers();
 
     /**
      *  Search all users
@@ -39,6 +45,12 @@ public interface UserServices {
      * @return User DTO model
      */
     public UserDto getUserByCode(String userCode);
+
+    /**
+     * Export List of Users
+     * @return List User bytes
+     */
+    public byte[] exportUsers();
 
     /**
      * Get Total Number of Users

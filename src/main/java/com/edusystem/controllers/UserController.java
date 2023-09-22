@@ -1,19 +1,22 @@
 package com.edusystem.controllers;
 
-import com.edusystem.dto.ApiResponse;
-import com.edusystem.dto.ChangePassword;
-import com.edusystem.dto.UserAssignmentFilter;
-import com.edusystem.entities.User;
-import com.edusystem.repositories.UserRepository;
-import com.edusystem.services.ExceptionService;
-import com.edusystem.services.UserServiceImpl;
-import com.edusystem.dto.UserDto;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.edusystem.services.ExceptionService;
+import com.edusystem.services.UserServiceImpl;
+import com.edusystem.dto.ApiResponse;
+import com.edusystem.dto.ChangePassword;
+import com.edusystem.dto.UserAssignmentFilter;
+import com.edusystem.dto.UserDto;
 
 /**
  * User Controller
@@ -36,7 +39,7 @@ public class UserController extends ExceptionController{
     ){
         ApiResponse<List<UserDto>> ApiResult = new ApiResponse<>();
         try{
-            List<UserDto> userDtoList = userServiceImpl.getAllUsers(index,size);
+            List<UserDto> userDtoList = userServiceImpl.getAllUsersPaging(index,size);
             ApiResult.setExecutionStatus(true);
             ApiResult.setResult(userDtoList);
             return ResponseEntity.ok(ApiResult);
@@ -48,12 +51,58 @@ public class UserController extends ExceptionController{
     }
 
     /**
+     * Get User by code
+     * @param code User Code
+     * @return Detected User DTO
+     */
+    @GetMapping("/{userCode}")
+    public ResponseEntity<ApiResponse<UserDto>> getUserByUserCode(
+            @PathVariable("userCode") String code
+    ){
+        ApiResponse<UserDto> apiResponse = new ApiResponse<>();
+        try {
+            UserDto userDto = userServiceImpl.getUserByCode(code);
+            apiResponse.setExecutionStatus(true);
+            apiResponse.setResult(userDto);
+            return ResponseEntity.ok(apiResponse);
+        }catch (Exception error){
+            apiResponse.setExecutionStatus(false);
+            apiResponse.setMessage(error.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
+        }
+    }
+
+    /**
      * Get Total Number of Users
      * @return Total number
      */
     @GetMapping("/total")
     public Long countUser (){
         return userServiceImpl.totalUsers();
+    }
+
+    /**
+     *  Export List of Users
+     * @return
+     */
+    @GetMapping("/export")
+    public ResponseEntity<Resource> exportUsers(){
+        try {
+            byte[] csvBytes = userServiceImpl.exportUsers();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=userList.csv");
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+
+            ByteArrayResource resource = new ByteArrayResource(csvBytes);
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(csvBytes.length)
+                    .body(resource);
+        }catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     /**
@@ -105,28 +154,6 @@ public class UserController extends ExceptionController{
             ApiResult.setExecutionStatus(false);
             ApiResult.setMessage(error.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResult);
-        }
-    }
-
-    /**
-     * Get User by code
-     * @param code User Code
-     * @return Detected User DTO
-     */
-    @GetMapping("/{userCode}")
-    public ResponseEntity<ApiResponse<UserDto>> getUserByUserCode(
-            @PathVariable("userCode") String code
-    ){
-        ApiResponse<UserDto> apiResponse = new ApiResponse<>();
-        try {
-            UserDto userDto = userServiceImpl.getUserByCode(code);
-            apiResponse.setExecutionStatus(true);
-            apiResponse.setResult(userDto);
-            return ResponseEntity.ok(apiResponse);
-        }catch (Exception error){
-            apiResponse.setExecutionStatus(false);
-            apiResponse.setMessage(error.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
         }
     }
 

@@ -1,17 +1,12 @@
 package com.edusystem.services;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.edusystem.configuration.security._SecurityConfig;
-import com.edusystem.dto.ChangePassword;
-import com.edusystem.dto.UserAssignmentFilter;
-import com.edusystem.entities.Role;
-import com.edusystem.entities.User;
-import com.edusystem.repositories.RoleRepository;
-import com.edusystem.repositories.UserRepository;
-import com.edusystem.dto.UserDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +15,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.opencsv.CSVWriter;
+
+import com.edusystem.configuration.security._SecurityConfig;
+import com.edusystem.entities.Role;
+import com.edusystem.entities.User;
+import com.edusystem.repositories.RoleRepository;
+import com.edusystem.repositories.UserRepository;
+import com.edusystem.dto.ChangePassword;
+import com.edusystem.dto.UserAssignmentFilter;
+import com.edusystem.dto.UserDto;
 
 /**
  * User services
@@ -46,29 +51,37 @@ public class UserServiceImpl implements UserServices{
 	 * @return user list
 	 */
 	@Override
-	public List<UserDto> getAllUsers(Integer pageIndex, Integer pageSize){
+	public List<UserDto> getAllUsersPaging(Integer pageIndex, Integer pageSize){
 		try{
-			List<UserDto> userDtoList = new ArrayList<>();
-			userDtoList = userRepository
-				.findAll().stream()
+			Pageable paging = PageRequest.of(pageIndex,pageSize, Sort.by("userCode"));
+			return userRepository
+				.findAll(paging).stream()
 				.map(e -> {
 					var temp = e.getUserRole().getName();
 					UserDto dto = modelMapper.map(e, UserDto.class);
 					dto.setUserRoleName(e.getUserRole().getName());
 					dto.setUserRoleCode(e.getUserRole().getCode());
 					return dto;
-				}).sorted(new Comparator<UserDto>() {
-					@Override
-					public int compare(UserDto o1, UserDto o2) {
-						return o1.getUserCode().compareTo(o2.getUserCode());
-					}
 				})
 				.collect(Collectors.toList());
+		}catch (Exception error){
+			throw new ExceptionService(error.getMessage());
+		}
+	}
 
-
-			int start = pageIndex * pageSize;
-			int end = Math.min(start + pageSize, userDtoList.size());
-			return userDtoList.subList(start,end);
+	@Override
+	public List<UserDto> getAllUsers() {
+		try{
+			return userRepository
+					.findAll().stream()
+					.map(e -> {
+						var temp = e.getUserRole().getName();
+						UserDto dto = modelMapper.map(e, UserDto.class);
+						dto.setUserRoleName(e.getUserRole().getName());
+						dto.setUserRoleCode(e.getUserRole().getCode());
+						return dto;
+					})
+					.collect(Collectors.toList());
 		}catch (Exception error){
 			throw new ExceptionService(error.getMessage());
 		}
@@ -125,7 +138,7 @@ public class UserServiceImpl implements UserServices{
 			List<User> userList = userRepository.filterUser(filterValue,paging);
 
 			List<UserDto> userDtoList = new ArrayList<>();
-			userDtoList =  userList
+			return  userList
 					.stream()
 					.map(e -> {
 						var temp = e.getUserRole().getName();
@@ -135,8 +148,31 @@ public class UserServiceImpl implements UserServices{
 						return dto;
 					})
 					.collect(Collectors.toList());
-			return userDtoList;
 		}catch (Exception error){
+			throw new ExceptionService(error.getMessage());
+		}
+	}
+
+	/**
+	 * Export List of Users
+	 * @return List user bytes
+	 */
+	public byte[] exportUsers(){
+		try {
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			CSVWriter csvWriter = new CSVWriter(new OutputStreamWriter(outputStream));
+
+			String[] header = {"User Code","User Name"};
+			csvWriter.writeNext(header);
+
+			for (UserDto user : getAllUsers()){
+				String[] row = {user.getUserCode(),user.getUserName()};
+				csvWriter.writeNext(row);
+			}
+
+			csvWriter.close();
+			return outputStream.toByteArray();
+		}catch (IOException error ){
 			throw new ExceptionService(error.getMessage());
 		}
 	}
