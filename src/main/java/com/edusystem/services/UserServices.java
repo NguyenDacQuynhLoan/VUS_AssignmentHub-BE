@@ -1,9 +1,11 @@
 package com.edusystem.services;
 
+import java.io.File;
 import java.util.List;
 
 import com.edusystem.dto.UserAssignmentFilter;
 import com.edusystem.dto.UserDto;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * User Services Interfaces
@@ -51,6 +53,8 @@ public interface UserServices {
      * @return List User bytes
      */
     public byte[] exportUsers();
+
+    public List<UserDto> importUsers(MultipartFile file);
 
     /**
      * Get Total Number of Users

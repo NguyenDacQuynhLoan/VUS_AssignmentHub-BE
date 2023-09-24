@@ -38,4 +38,20 @@ public class UserDto {
     public List<SubjectDto> subjects;
 
     public List<AssignmentDto> assignments;
+
+//    public UserDto(String userCode, String userName, String gender, String userRoleCode, String userRoleName, Date dateOfBirth, String location, String phone, Major major, String email, String password, List<SubjectDto> subjects, List<AssignmentDto> assignments) {
+//        this.userCode = userCode;
+//        this.userName = userName;
+//        this.gender = gender;
+//        this.userRoleCode = userRoleCode;
+//        this.userRoleName = userRoleName;
+//        this.dateOfBirth = dateOfBirth;
+//        this.location = location;
+//        this.phone = phone;
+//        this.major = major;
+//        this.email = email;
+//        this.password = password;
+//        this.subjects = subjects;
+//        this.assignments = assignments;
+//    }
 }

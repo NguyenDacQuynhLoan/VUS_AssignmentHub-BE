@@ -1,5 +1,6 @@
 package com.edusystem.controllers;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import com.edusystem.dto.ApiResponse;
 import com.edusystem.dto.ChangePassword;
 import com.edusystem.dto.UserAssignmentFilter;
 import com.edusystem.dto.UserDto;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * User Controller
@@ -102,6 +104,20 @@ public class UserController extends ExceptionController{
                     .body(resource);
         }catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PostMapping("/import")
+    public List<UserDto> importUsers(@RequestBody MultipartFile file){
+        try {
+            if(file == null){
+                throw new Exception("File is not exist");
+            }
+            List<UserDto> dtoList =  userServiceImpl.importUsers(file);
+            return dtoList;
+        }catch (Exception error){
+//            return error.getMessage();
+            return null;
         }
     }
 
