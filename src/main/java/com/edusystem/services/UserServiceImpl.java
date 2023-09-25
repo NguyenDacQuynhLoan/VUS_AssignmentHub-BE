@@ -165,27 +165,25 @@ public class UserServiceImpl implements UserServices {
 
     /**
      * Export List of Users
-     *
      * @return List user bytes
      */
     public byte[] exportUsers() {
         try {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            CSVWriter csvWriter = new CSVWriter(new OutputStreamWriter(outputStream));
             String[] header = {
                     "User Code",
                     "User Name",
                     "User Role",
-
                     "Email",
                     "Password",
                     "Gender",
-
                     "Location",
                     "Phone",
                     "Major",
-
             };
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            CSVWriter csvWriter = new CSVWriter(new OutputStreamWriter(outputStream));
+
             csvWriter.writeNext(header);
 
             for (UserDto user : getAllUsers()) {
@@ -210,10 +208,19 @@ public class UserServiceImpl implements UserServices {
         }
     }
 
+    /**
+     * Import List of Users
+     * @param multipartFile Import File
+     * @return Success/Fail result
+     */
     @Override
-    public List<UserDto> importUsers(MultipartFile multipartFile) {
+    public Map<String,Integer> importUsers(MultipartFile multipartFile) {
         try {
-            List<UserDto> userDtoList = new ArrayList<>();
+            Map<String, Integer> importResult = new HashMap<>(){{
+               put("totalSuccess",0);
+               put("totalFail",0);
+            }};
+
             Map<String, Integer> columnIndexMapper = new HashMap<>();
 
             FileInputStream fileInputStream = (FileInputStream) multipartFile.getInputStream();
@@ -226,46 +233,53 @@ public class UserServiceImpl implements UserServices {
                 rowCount++;
                 if (rowCount == 1) {
                     for (int i = 0; i < lines.length; i++) {
-                        String[] cells = lines[i].split(";");
-                        for (int j = 0; j <  cells.length; j++) {
-                            columnIndexMapper.put(cells[j],j);
-                        }
+                        columnIndexMapper.put(lines[i],i);
                     }
                 }else{
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                    UserDto userDto = new UserDto();
                     for (int i = 0; i < lines.length; i++) {
-                        String[] cells = lines[i].split(";");
-                            String userCode = cells[columnIndexMapper.get("User Code")];
-                            String userName = cells[columnIndexMapper.get("User Name")];
-                            String userRole = cells[columnIndexMapper.get("User Role")];
-                            String email = cells[columnIndexMapper.get("Email")];
-                            String password = cells[columnIndexMapper.get("Password")];
-                            String gender = cells[columnIndexMapper.get("Gender")];
-                            String location = cells[columnIndexMapper.get("Location")];
-                            String phone = cells[columnIndexMapper.get("Phone")];
-                            String major = cells[columnIndexMapper.get("Major")];
-                            UserDto userDto = new UserDto();
+                        String major = lines[columnIndexMapper.get("Major")];
+                        if(!Major.containMajor(major)){
+                            importResult.put("totalFail",importResult.get("totalFail") + 1);
+                            continue;
+                        }
 
-                            userDto.setUserCode(userCode);
-                            userDto.setUserName(userName);
-                            userDto.setUserRoleCode(userRole);
-                            userDto.setDateOfBirth(dateFormat.parse("2000-12-12"));
-                            userDto.setLocation(location);
-                            userDto.setPhone(phone);
-                            userDto.setGender(gender);
-                            userDto.setMajor(Major.valueOf(major));
-                            userDto.setAssignments(new ArrayList<>());
-                            userDto.setSubjects(new ArrayList<>());
-                            userDto.setEmail(email);
-                            userDto.setPassword(password);
+                        String userCode = lines[columnIndexMapper.get("User Code")];
+                        String userName = lines[columnIndexMapper.get("User Name")];
+                        String userRole = lines[columnIndexMapper.get("User Role")];
+                        String email = lines[columnIndexMapper.get("Email")];
+                        String password = lines[columnIndexMapper.get("Password")];
+                        String gender = lines[columnIndexMapper.get("Gender")];
+                        String location = lines[columnIndexMapper.get("Location")];
+                        String phone = lines[columnIndexMapper.get("Phone")];
 
-                            userDtoList.add(userDto);
-                            createUser(userDto);
+
+                        userDto.setUserCode(userCode);
+                        userDto.setUserName(userName);
+                        userDto.setUserRoleCode(userRole);
+                        userDto.setDateOfBirth(dateFormat.parse("2000-12-12"));
+                        userDto.setLocation(location);
+                        userDto.setPhone(phone);
+                        userDto.setGender(gender);
+                        userDto.setMajor(Major.valueOf(major));
+                        userDto.setAssignments(new ArrayList<>());
+                        userDto.setSubjects(new ArrayList<>());
+                        userDto.setEmail(email);
+                        userDto.setPassword(password);
+                    }
+
+                    if(userDto.getUserName() != null){
+                        createUser(userDto);
+                        importResult.put("totalSuccess",importResult.get("totalSuccess") + 1);
+                    }else{
+                        importResult.put("totalFail",importResult.get("totalFail") + 1);
                     }
                 }
             }
-            return userDtoList;
-        } catch (IOException | CsvValidationException | ParseException exception) {
+            return  importResult;
+        } catch (IOException | CsvValidationException | ParseException | IllegalArgumentException exception) {
             throw new ExceptionService(exception.getMessage());
         }
     }
@@ -326,18 +340,18 @@ public class UserServiceImpl implements UserServices {
     public UserDto createUser(UserDto user) {
         try {
             // validate
-//            if (userRepository.findByUserCode(user.getUserCode()) != null) {
-//                throw new RuntimeException(user.getUserCode() + " is existed");
-//            }
-//
-//            if (userRepository.findByEmail(user.getEmail()) != null) {
-//                throw new ExceptionService(user.getEmail() + " is existed");
-//            }
-//
+            if (userRepository.findByUserCode(user.getUserCode()) != null) {
+                throw new RuntimeException(user.getUserCode() + " is existed");
+            }
+
+            if (userRepository.findByEmail(user.getEmail()) != null) {
+                throw new ExceptionService(user.getEmail() + " is existed");
+            }
+
             Role userRole = roleRepository.findByCode(user.getUserRoleCode());
-//            if (userRole == null) {
-//                throw new ExceptionService("Role is not exist.");
-//            }
+            if (userRole == null) {
+                throw new ExceptionService("Role is not exist.");
+            }
 
             // encode password
             String encodedPassword = securityConfig

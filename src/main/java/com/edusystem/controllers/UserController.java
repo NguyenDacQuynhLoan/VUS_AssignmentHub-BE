@@ -1,7 +1,7 @@
 package com.edusystem.controllers;
 
-import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -85,7 +85,7 @@ public class UserController extends ExceptionController{
 
     /**
      *  Export List of Users
-     * @return
+     * @return File Export
      */
     @GetMapping("/export")
     public ResponseEntity<Resource> exportUsers(){
@@ -107,17 +107,23 @@ public class UserController extends ExceptionController{
         }
     }
 
+    /**
+     *  Import List Of Users
+     * @param file File Import
+     * @return Result Success/Fail
+     */
     @PostMapping("/import")
-    public List<UserDto> importUsers(@RequestBody MultipartFile file){
+    public ResponseEntity<ApiResponse<Map<String,Integer>>> importUsers(@RequestBody MultipartFile file){
+        ApiResponse<Map<String,Integer>> apiResponse = new ApiResponse<>();
         try {
-            if(file == null){
-                throw new Exception("File is not exist");
-            }
-            List<UserDto> dtoList =  userServiceImpl.importUsers(file);
-            return dtoList;
+            Map<String,Integer> result =  userServiceImpl.importUsers(file);
+            apiResponse.setExecutionStatus(true);
+            apiResponse.setResult(result);
+            return ResponseEntity.ok(apiResponse);
         }catch (Exception error){
-//            return error.getMessage();
-            return null;
+            apiResponse.setExecutionStatus(false);
+            apiResponse.setMessage(error.getMessage());
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
         }
     }
 

@@ -1,7 +1,7 @@
 package com.edusystem.services;
 
-import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import com.edusystem.dto.UserAssignmentFilter;
 import com.edusystem.dto.UserDto;
@@ -54,7 +54,12 @@ public interface UserServices {
      */
     public byte[] exportUsers();
 
-    public List<UserDto> importUsers(MultipartFile file);
+    /**
+     * Import List of Users
+     * @param file Import File
+     * @return Success/Fail result
+     */
+    public Map<String,Integer> importUsers(MultipartFile file);
 
     /**
      * Get Total Number of Users
